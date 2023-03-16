@@ -16,7 +16,7 @@ import {RolesModule} from "../roles/roles.module";
         JwtModule.register({
             secret: process.env.PRIVATE_kEY || "SECRET_KEY",
             signOptions: {
-                expiresIn: "12h"
+                expiresIn: "4h"
             }
         }),
         SequelizeModule.forFeature([UsersModel]),

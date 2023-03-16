@@ -21,14 +21,14 @@ export class AuthService {
         if (!user) {
             throw new UnauthorizedException({message: "The are no users with such email"})
         }
-        const passwordsCompare = bcrypt.compare(dto.password, user.password)
+        const passwordsCompare = await bcrypt.compare(dto.password, user.password)
         if (passwordsCompare) {
             const payload = {email: user.email, id: user.id, roles: user.roles}
             return {
                 token: this.jwtService.sign(payload)
             }
         }
-        throw new UnauthorizedException({message: "wrong password or email"})
+        throw new UnauthorizedException({message: "Wrong password or email"})
     }
 
     async registration(dto) {
