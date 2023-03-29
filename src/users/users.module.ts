@@ -3,7 +3,6 @@ import {UsersController} from "./users.controller";
 import {UsersService} from "./users.service";
 import {SequelizeModule} from "@nestjs/sequelize";
 import {UsersModel} from "./users.model";
-import {BelongsToMany} from "sequelize-typescript";
 import {RolesModel} from "../roles/roles.model";
 import {UsersRolesModel} from "../pivotTables/users_roles.model";
 import {RolesModule} from "../roles/roles.module";
@@ -24,8 +23,4 @@ import {AvatarsModule} from "../avatars/avatars.module";
     ]
 })
 export class UsersModule {
-
-    @BelongsToMany(() => RolesModel, () => UsersRolesModel)
-    roles: RolesModel[]
-
 }

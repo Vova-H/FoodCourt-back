@@ -16,6 +16,4 @@ import {BelongsTo} from "sequelize-typescript";
     exports: [AvatarsService]
 })
 export class AvatarsModule {
-    @BelongsTo(() => UsersModel, "id")
-    user: UsersModel
 }

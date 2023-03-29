@@ -15,6 +15,7 @@ import {UsersController} from "./users/users.controller";
 import { AvatarsModule } from './avatars/avatars.module';
 import {AvatarsController} from "./avatars/avatars.controller";
 import {AvatarsModel} from "./avatars/avatarts.model";
+import {FavoritesModel} from "./pivotTables/favorites.model";
 
 
 
@@ -30,7 +31,7 @@ import {AvatarsModel} from "./avatars/avatarts.model";
             username: process.env.POSTGRES_USER,
             password: process.env.POSTGRES_PASSWORD,
             database: process.env.POSTGRES_DB,
-            models: [UsersModel, RolesModel, UsersRolesModel, DishesModel, AvatarsModel],
+            models: [UsersModel, RolesModel, UsersRolesModel, DishesModel, AvatarsModel, FavoritesModel],
             autoLoadModels: true
         }),
         UsersModule,

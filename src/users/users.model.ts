@@ -3,6 +3,8 @@ import {ApiProperty} from "@nestjs/swagger";
 import {UsersRolesModel} from "../pivotTables/users_roles.model";
 import {RolesModel} from "../roles/roles.model";
 import {AvatarsModel} from "../avatars/avatarts.model";
+import {DishesModel} from "../dishes/dishes.model";
+import {FavoritesModel} from "../pivotTables/favorites.model";
 
 
 interface UserCreationAttrs {
@@ -33,4 +35,7 @@ export class UsersModel extends Model<UsersModel, UserCreationAttrs> {
 
     @HasOne(() => AvatarsModel, "id")
     avatar: AvatarsModel
+
+    @BelongsToMany(() => DishesModel, () => FavoritesModel)
+    favorites: DishesModel[]
 }

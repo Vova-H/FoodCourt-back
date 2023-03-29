@@ -25,11 +25,27 @@ export class DishesController {
     }
 
     @Post()
-    @UseInterceptors(FileInterceptor('imageData'))
+    @UseInterceptors(FileInterceptor('image'))
     @ApiOperation({summary: "Add dish"})
     @ApiResponse({status: 200, type: [DishesModel]})
     async createDish(@UploadedFile() dtoDishImage, @Body() dtoDish) {
         return this.dishesService.createDish(dtoDish, dtoDishImage)
     }
+
+    @Post("/favorites")
+    async checkIsFavorites(@Body() dto) {
+        return await this.dishesService.checkIsFavorites(dto.dishId, dto.userId)
+    }
+
+    @Post("/favorites/add")
+    async addToFavorites(@Body() dto) {
+        return await this.dishesService.addToFavorites(dto.dishId, dto.userId)
+    }
+
+    @Post("/favorites/remove")
+    async removeFromFavorites(@Body() dto) {
+        return await this.dishesService.removeFromFavorites(dto.dishId, dto.userId)
+    }
+
 }
 

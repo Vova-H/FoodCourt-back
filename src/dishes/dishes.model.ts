@@ -1,5 +1,9 @@
-import {Column, DataType, HasOne, Model, Table} from "sequelize-typescript";
+import {BelongsToMany, Column, DataType, HasOne, Model, Table} from "sequelize-typescript";
 import {ApiProperty} from "@nestjs/swagger";
+import {RolesModel} from "../roles/roles.model";
+import {UsersRolesModel} from "../pivotTables/users_roles.model";
+import {UsersModel} from "../users/users.model";
+import {FavoritesModel} from "../pivotTables/favorites.model";
 
 
 interface DishCreationAttrs {
@@ -44,6 +48,10 @@ export class DishesModel extends Model<DishesModel, DishCreationAttrs> {
     @ApiProperty({example: "30", description: "price of dish"})
     @Column({type: DataType.INTEGER, allowNull: false})
     price: number;
+
+
+    @BelongsToMany(() => UsersModel, () => FavoritesModel)
+    favorites: UsersModel[]
 
 }
 

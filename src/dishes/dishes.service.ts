@@ -1,6 +1,8 @@
 import {Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {DishesModel} from "./dishes.model";
+import {UsersModel} from "../users/users.model";
+import {FavoritesModel} from "../pivotTables/favorites.model";
 
 
 @Injectable()
@@ -42,5 +44,31 @@ export class DishesService {
         const b64 = Buffer.from(dish.imageData).toString('base64');
         return `<img src="data:image/jpeg;base64,${b64}"  alt="img"/>`
     }
+
+    async checkIsFavorites(dishId, userId) {
+        const favorites = await FavoritesModel.findOne({where: {userId: userId, dishId: dishId}})
+        if (favorites) {
+            return favorites.status
+        }
+        const favorite = await FavoritesModel.create({userId: userId, dishId: dishId, status: false})
+        await favorite.save()
+        return favorite.status
+    }
+
+    async addToFavorites(dishId, userId) {
+        const favorite = await FavoritesModel.findOne({where: {userId: userId, dishId: dishId}})
+        favorite.status = true
+        await favorite.save()
+        return favorite.status
+    }
+
+    async removeFromFavorites(dishId, userId) {
+        const favorite = await FavoritesModel.findOne({where: {userId: userId, dishId: dishId}})
+        favorite.status = false
+        await favorite.save()
+        console.log(favorite.status)
+        return favorite.status
+    }
+
 }
 
