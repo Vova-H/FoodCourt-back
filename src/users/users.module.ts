@@ -8,13 +8,16 @@ import {RolesModel} from "../roles/roles.model";
 import {UsersRolesModel} from "../pivotTables/users_roles.model";
 import {RolesModule} from "../roles/roles.module";
 import {AuthModule} from "../auth/auth.module";
+import {AvatarsModel} from "../avatars/avatarts.model";
+import {AvatarsModule} from "../avatars/avatars.module";
 
 @Module({
     controllers: [UsersController],
     providers: [UsersService],
     imports: [
-        SequelizeModule.forFeature([UsersModel, RolesModel, UsersRolesModel]),
-        RolesModule, forwardRef(() => AuthModule)
+        SequelizeModule.forFeature([UsersModel, RolesModel, UsersRolesModel, AvatarsModel]),
+        RolesModule, forwardRef(() => AuthModule),
+        AvatarsModule
     ],
     exports: [
         UsersService,
@@ -24,4 +27,5 @@ export class UsersModule {
 
     @BelongsToMany(() => RolesModel, () => UsersRolesModel)
     roles: RolesModel[]
+
 }

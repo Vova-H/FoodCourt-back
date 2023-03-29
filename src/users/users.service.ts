@@ -14,7 +14,21 @@ export class UsersService {
     }
 
     async getAllUsers() {
-        return UsersModel.findAll({include: {all: true}})
+        return this.userModel.findAll({include: {all: true}})
+    }
+
+    async getUserById(id) {
+        const user = await this.userModel.findOne({where: {id: id.id}, include: {all: true}})
+        console.log(user)
+        if (!user) {
+            throw new HttpException("There are no users with such id", HttpStatus.BAD_REQUEST)
+        }
+        return {
+            username: user.username,
+            email: user.email,
+            roles: user.roles,
+            avatar: Buffer.from(user.avatar.value).toString('base64')
+        }
     }
 
 

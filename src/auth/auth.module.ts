@@ -7,6 +7,7 @@ import * as process from "process";
 import {UsersModel} from "../users/users.model";
 import {SequelizeModule} from "@nestjs/sequelize";
 import {RolesModule} from "../roles/roles.module";
+import {AvatarsModule} from "../avatars/avatars.module";
 
 @Module({
     controllers: [AuthController],
@@ -20,7 +21,8 @@ import {RolesModule} from "../roles/roles.module";
             }
         }),
         SequelizeModule.forFeature([UsersModel]),
-        RolesModule
+        RolesModule,
+        AvatarsModule
     ],
     exports: [
         AuthService, JwtModule

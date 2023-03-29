@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Post, UseGuards} from '@nestjs/common';
+import {Body, Controller, Get, Param, Post, Query, UseGuards} from '@nestjs/common';
 import {UsersService} from "./users.service";
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {UsersModel} from "./users.model";
@@ -19,11 +19,22 @@ export class UsersController {
     @Get()
     @ApiOperation({summary: "Getting all users"})
     @ApiResponse({status: 200, type: [UsersModel]})
-    @UseGuards(AuthGuard)
-    @Roles("ADMIN")
-    @UseGuards(RolesGuard)
+    // @UseGuards(AuthGuard)
+    // @Roles("ADMIN")
+    // @UseGuards(RolesGuard)
     async getAllUsers() {
         return this.userService.getAllUsers()
+    }
+
+    @Get("/user")
+    @ApiOperation({summary: "Getting all users"})
+    @ApiResponse({status: 200, type: [UsersModel]})
+    // @UseGuards(AuthGuard)
+    // @Roles("ADMIN")
+    // @UseGuards(RolesGuard)
+
+    async getUserById(@Query() id) {
+        return await this.userService.getUserById(id)
     }
 
     @Post()

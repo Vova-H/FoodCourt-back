@@ -9,7 +9,7 @@ interface RoleCreationAttrs {
 }
 
 @Table({
-    tableName: "roles"
+    tableName: "roles",
 })
 export class RolesModel extends Model<RolesModel, RoleCreationAttrs> {
     @ApiProperty({example: 1, description: "Uniq id"})
@@ -18,7 +18,6 @@ export class RolesModel extends Model<RolesModel, RoleCreationAttrs> {
     @ApiProperty({example: "ADMIN", description: "Roles"})
     @Column({type: DataType.STRING, allowNull: false, unique: true})
     role: string;
-
 
     @BelongsToMany(() => UsersModel, () => UsersRolesModel)
     users: UsersModel[]

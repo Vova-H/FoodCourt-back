@@ -1,17 +1,21 @@
 import {Module} from "@nestjs/common";
 import {SequelizeModule} from "@nestjs/sequelize";
-import {UsersController} from './users/users.controller';
-import {UsersService} from './users/users.service';
 import {ConfigModule} from "@nestjs/config";
-import { UsersModule } from './users/users.module';
+import {UsersModule} from './users/users.module';
 import * as process from "process";
 import {UsersModel} from "./users/users.model";
-import { RolesController } from './roles/roles.controller';
-import { RolesService } from './roles/roles.service';
-import { RolesModule } from './roles/roles.module';
+import {RolesModule} from './roles/roles.module';
 import {RolesModel} from "./roles/roles.model";
 import {UsersRolesModel} from "./pivotTables/users_roles.model";
-import { AuthModule } from './auth/auth.module';
+import {AuthModule} from './auth/auth.module';
+import {DishesController} from './dishes/dishes.controller';
+import {DishesModule} from './dishes/dishes.module';
+import {DishesModel} from "./dishes/dishes.model";
+import {UsersController} from "./users/users.controller";
+import { AvatarsModule } from './avatars/avatars.module';
+import {AvatarsController} from "./avatars/avatars.controller";
+import {AvatarsModel} from "./avatars/avatarts.model";
+
 
 
 @Module({
@@ -26,13 +30,16 @@ import { AuthModule } from './auth/auth.module';
             username: process.env.POSTGRES_USER,
             password: process.env.POSTGRES_PASSWORD,
             database: process.env.POSTGRES_DB,
-            models: [UsersModel, RolesModel, UsersRolesModel],
+            models: [UsersModel, RolesModel, UsersRolesModel, DishesModel, AvatarsModel],
             autoLoadModels: true
         }),
         UsersModule,
         RolesModule,
         AuthModule,
+        DishesModule,
+        AvatarsModule,
     ],
+    controllers: [DishesController, UsersController, AvatarsController],
 })
 
 export class AppModule {

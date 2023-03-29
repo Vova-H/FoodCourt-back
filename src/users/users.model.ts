@@ -1,7 +1,8 @@
-import {BelongsToMany, Column, DataType, Model, Table} from "sequelize-typescript";
+import {BelongsToMany, Column, DataType, ForeignKey, HasMany, HasOne, Model, Table} from "sequelize-typescript";
 import {ApiProperty} from "@nestjs/swagger";
 import {UsersRolesModel} from "../pivotTables/users_roles.model";
 import {RolesModel} from "../roles/roles.model";
+import {AvatarsModel} from "../avatars/avatarts.model";
 
 
 interface UserCreationAttrs {
@@ -27,7 +28,9 @@ export class UsersModel extends Model<UsersModel, UserCreationAttrs> {
     @Column({type: DataType.STRING, allowNull: false})
     password: string;
 
-
     @BelongsToMany(() => RolesModel, () => UsersRolesModel)
     roles: RolesModel[]
+
+    @HasOne(() => AvatarsModel, "id")
+    avatar: AvatarsModel
 }

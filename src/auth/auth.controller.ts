@@ -1,10 +1,11 @@
-import {Body, Controller, Post, UsePipes} from '@nestjs/common';
+import {Body, Controller, Post, UploadedFile, UseInterceptors, UsePipes} from '@nestjs/common';
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {AuthService} from "./auth.service";
 import {RegistrationDto} from "./dto/registration.dto";
 import {LoginDto} from "./dto/login.dto";
 import {UsersModel} from "../users/users.model";
 import ValidationPipe from "../pipes/validation.pipe"
+import {FileInterceptor} from "@nestjs/platform-express";
 
 @ApiTags("Authentication ")
 @Controller('auth')
@@ -17,14 +18,16 @@ export class AuthController {
     @UsePipes(ValidationPipe)
     @Post("/login")
     async login(@Body() dto: LoginDto) {
-        return this.authService.login(dto)
+        const {token} = await this.authService.login(dto)
+        return {token}
     }
 
     @ApiOperation({summary: "Registration new user"})
     @ApiResponse({status: 200, type: UsersModel})
+    @UseInterceptors(FileInterceptor('avatar'))
     @Post("/registration")
-    async registration(@Body() dto: RegistrationDto) {
-        return this.authService.registration(dto)
+    async registration(@Body() dto: RegistrationDto, @UploadedFile() avatar) {
+        return this.authService.registration(dto, avatar)
     }
 
 }
