@@ -5,6 +5,7 @@ import {RolesModel} from "../roles/roles.model";
 import {AvatarsModel} from "../avatars/avatarts.model";
 import {DishesModel} from "../dishes/dishes.model";
 import {FavoritesModel} from "../pivotTables/favorites.model";
+import {IsOptional} from "class-validator";
 
 
 interface UserCreationAttrs {

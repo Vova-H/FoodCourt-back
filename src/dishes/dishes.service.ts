@@ -55,6 +55,31 @@ export class DishesService {
         return favorite.status
     }
 
+    async getAllFavoritesDishes({userId}) {
+        const favorites = await FavoritesModel.findAll({
+            where: {userId: userId, status: true},
+        })
+        const ids = favorites.map((id) => {
+            return id.dishId
+        })
+        const dishes = await DishesModel.findAll({
+            where: {id: ids}
+        })
+        const filteredDishes = []
+        dishes.forEach((dish) => {
+            filteredDishes.push({
+                id: dish.id,
+                name: dish.name,
+                description: dish.description,
+                weight: dish.weight,
+                calories: dish.calories,
+                price: dish.price,
+                image: Buffer.from(dish.imageData).toString('base64'),
+            })
+        })
+        return filteredDishes
+    }
+
     async addToFavorites(dishId, userId) {
         const favorite = await FavoritesModel.findOne({where: {userId: userId, dishId: dishId}})
         favorite.status = true
@@ -66,7 +91,6 @@ export class DishesService {
         const favorite = await FavoritesModel.findOne({where: {userId: userId, dishId: dishId}})
         favorite.status = false
         await favorite.save()
-        console.log(favorite.status)
         return favorite.status
     }
 

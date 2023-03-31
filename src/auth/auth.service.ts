@@ -47,9 +47,7 @@ export class AuthService {
         }
         const hashedPassword = await bcrypt.hash(dto.password, 5)
         const user = await this.userService.createUser({...dto, password: hashedPassword})
-        const avatar = await this.avatarService.createAvatar(dtoAvatar, user.id)
-        // await user.$set("avatar", avatar.id)
-        // user.avatar = avatar.id
+        await this.avatarService.createAvatar(dtoAvatar, user.id);
         await user.save()
         throw new HttpException("The user has been created successfully", HttpStatus.CREATED)
     }
