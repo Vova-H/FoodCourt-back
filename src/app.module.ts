@@ -16,6 +16,11 @@ import { AvatarsModule } from './avatars/avatars.module';
 import {AvatarsController} from "./avatars/avatars.controller";
 import {AvatarsModel} from "./avatars/avatarts.model";
 import {FavoritesModel} from "./pivotTables/favorites.model";
+import { OrdersController } from './orders/orders.controller';
+import { OrdersService } from './orders/orders.service';
+import { OrdersModule } from './orders/orders.module';
+import {OrdersModel} from "./orders/orders.model";
+import {OrdersDishesModel} from "./pivotTables/Orders_Dishes.model";
 
 
 
@@ -31,7 +36,7 @@ import {FavoritesModel} from "./pivotTables/favorites.model";
             username: process.env.POSTGRES_USER,
             password: process.env.POSTGRES_PASSWORD,
             database: process.env.POSTGRES_DB,
-            models: [UsersModel, RolesModel, UsersRolesModel, DishesModel, AvatarsModel, FavoritesModel],
+            models: [UsersModel, RolesModel, UsersRolesModel, DishesModel, AvatarsModel, FavoritesModel, OrdersModel, OrdersDishesModel],
             autoLoadModels: true
         }),
         UsersModule,
@@ -39,8 +44,9 @@ import {FavoritesModel} from "./pivotTables/favorites.model";
         AuthModule,
         DishesModule,
         AvatarsModule,
+        OrdersModule,
     ],
-    controllers: [DishesController, UsersController, AvatarsController],
+    controllers: [DishesController, UsersController, AvatarsController, OrdersController],
 })
 
 export class AppModule {

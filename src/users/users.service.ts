@@ -14,7 +14,8 @@ export class UsersService {
     }
 
     async getAllUsers() {
-        return this.userModel.findAll({include: {all: true}})
+        return await this.userModel.findAll({include: {all: true}})
+
     }
 
     async getUserById(id) {
@@ -36,6 +37,7 @@ export class UsersService {
         const role = await this.roleService.getRoleByValue("USER")
         await user.$set('roles', [role.id])
         user.roles = [role]
+        await user.save()
         return user
     }
 
