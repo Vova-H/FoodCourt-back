@@ -1,10 +1,7 @@
 import {Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {DishesModel} from "./dishes.model";
-import {UsersModel} from "../users/users.model";
 import {FavoritesModel} from "../pivotTables/favorites.model";
-import {empty} from "rxjs";
-import {isArray} from "class-validator";
 
 
 @Injectable()

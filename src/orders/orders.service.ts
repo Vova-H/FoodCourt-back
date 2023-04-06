@@ -12,14 +12,15 @@ export class OrdersService {
     }
 
     async createOrder(cart) {
-        const createDIshOrderHelper = async (orderId, product) => {
-            await OrdersDishesModel.create({
-                orderId: orderId,
-                dishId: product[0].id,
-                quantity: product[1]
-            })
-        }
+        cart = cart.flat(1)
         try {
+            const createDIshOrderHelper = async (orderId, product) => {
+                await OrdersDishesModel.create({
+                    orderId: orderId,
+                    dishId: product[0].id,
+                    quantity: product[1]
+                })
+            }
             const date = new Date
             const dateOrder = date.toJSON().slice(0, 10)
             const timeOrder = date.toTimeString().slice(0, 8)
