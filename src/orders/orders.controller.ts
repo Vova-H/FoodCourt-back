@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Post} from '@nestjs/common';
+import {Body, Controller, Get, Param, Post, Query} from '@nestjs/common';
 import {ApiOperation, ApiResponse} from "@nestjs/swagger";
 import {UsersModel} from "../users/users.model";
 import {RegistrationDto} from "../auth/dto/registration.dto";
@@ -15,7 +15,12 @@ export class OrdersController {
     @Post("create")
     @ApiOperation({summary: "Creating new order"})
     @ApiResponse({status: 200, type: OrdersModel})
-    async createOrder(@Body() cart) {
-        return this.ordersService.createOrder(cart)
+    async createOrder(@Query() clientId: number, @Body() cart) {
+        return this.ordersService.createOrder(cart, clientId)
+    }
+
+    @Get("getOrderByClientId")
+    async getOrderByClientId(@Query() dto) {
+        return this.ordersService.getOrderByClientId(dto)
     }
 }

@@ -15,7 +15,6 @@ export class UsersService {
 
     async getAllUsers() {
         return await this.userModel.findAll({include: {all: true}})
-
     }
 
     async getUserById(id) {
@@ -27,7 +26,8 @@ export class UsersService {
             username: user.username,
             email: user.email,
             roles: user.roles,
-            avatar: Buffer.from(user.avatar.value).toString('base64')
+            avatar: Buffer.from(user.avatar.value).toString('base64'),
+            orders: user.orders
         }
     }
 

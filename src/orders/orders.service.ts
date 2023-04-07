@@ -2,6 +2,7 @@ import {HttpException, Injectable} from '@nestjs/common';
 import {OrdersModel} from "./orders.model";
 import {InjectModel} from "@nestjs/sequelize";
 import {OrdersDishesModel} from "../pivotTables/Orders_Dishes.model";
+import {DishesModel} from "../dishes/dishes.model";
 
 @Injectable()
 export class OrdersService {
@@ -11,10 +12,10 @@ export class OrdersService {
     ) {
     }
 
-    async createOrder(cart) {
+    async createOrder(cart, clientId) {
         cart = cart.flat(1)
         try {
-            const createDIshOrderHelper = async (orderId, product) => {
+            const createDIshOrderHandler = async (orderId, product) => {
                 await OrdersDishesModel.create({
                     orderId: orderId,
                     dishId: product[0].id,
@@ -24,9 +25,14 @@ export class OrdersService {
             const date = new Date
             const dateOrder = date.toJSON().slice(0, 10)
             const timeOrder = date.toTimeString().slice(0, 8)
-            const order = await OrdersModel.create({status: false, date: dateOrder, time: timeOrder})
+            const order = await OrdersModel.create({
+                clientId: clientId.clientId,
+                status: false,
+                date: dateOrder,
+                time: timeOrder
+            })
             cart.forEach(product => {
-                createDIshOrderHelper(order.dataValues.id, product)
+                createDIshOrderHandler(order.dataValues.id, product)
             })
             return {"message": "You order was been created successfully"}
 
@@ -34,5 +40,13 @@ export class OrdersService {
             throw new HttpException("Bad request", 400)
         }
 
+    }
+
+    async getOrderByClientId(dto) {
+        return await OrdersModel.findAll({
+            where: {clientId: dto.clientId},
+            include: [{model: DishesModel, attributes: ["name", "price"]}],
+
+        })
     }
 }

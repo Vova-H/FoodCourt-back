@@ -6,6 +6,7 @@ import {AvatarsModel} from "../avatars/avatarts.model";
 import {DishesModel} from "../dishes/dishes.model";
 import {FavoritesModel} from "../pivotTables/favorites.model";
 import {IsOptional} from "class-validator";
+import {OrdersModel} from "../orders/orders.model";
 
 
 interface UserCreationAttrs {
@@ -34,9 +35,12 @@ export class UsersModel extends Model<UsersModel, UserCreationAttrs> {
     @BelongsToMany(() => RolesModel, () => UsersRolesModel)
     roles: RolesModel[]
 
-    @HasOne(() => AvatarsModel, "id")
+    @HasOne(() => AvatarsModel)
     avatar: AvatarsModel
 
     @BelongsToMany(() => DishesModel, () => FavoritesModel)
     favorites: DishesModel[]
+
+    @HasMany(() => OrdersModel)
+    orders: OrdersModel[]
 }

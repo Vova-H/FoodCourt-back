@@ -1,13 +1,15 @@
-import {BelongsToMany, Column, DataType, Model, Table} from "sequelize-typescript";
+import {BelongsTo, BelongsToMany, Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
 import {ApiProperty} from "@nestjs/swagger";
 import {DishesModel} from "../dishes/dishes.model";
 import {OrdersDishesModel} from "../pivotTables/Orders_Dishes.model";
+import {UsersModel} from "../users/users.model";
 
 
 interface OrdersCreationAttrs {
     status: boolean
     date: string
     time: string
+    clientId: number
 }
 
 @Table({
@@ -31,9 +33,14 @@ export class OrdersModel extends Model<OrdersModel, OrdersCreationAttrs> {
     @Column({type: DataType.TIME, allowNull: false})
     time: string;
 
+    @ForeignKey(() => UsersModel)
+    clientId: number
 
     @BelongsToMany(() => DishesModel, () => OrdersDishesModel)
     dishes: DishesModel[]
+
+    @BelongsTo(() => UsersModel)
+    client: UsersModel
 
 }
 
