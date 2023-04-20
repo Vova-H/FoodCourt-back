@@ -27,7 +27,8 @@ export class UsersService {
             email: user.email,
             roles: user.roles,
             avatar: Buffer.from(user.avatar.value).toString('base64'),
-            orders: user.orders
+            orders: user.orders,
+            cartItems: user.cartItems
         }
     }
 

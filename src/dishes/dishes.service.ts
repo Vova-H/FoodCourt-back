@@ -12,10 +12,9 @@ export class DishesService {
     }
 
     async getAllDishes() {
-        const allDishes = await DishesModel.findAll({include: {all: true}})
-        const newDishes = []
-        allDishes.forEach((dish) => {
-            newDishes.push({
+        const allDishes = await DishesModel.findAll()
+        return allDishes.map((dish => {
+            return {
                 id: dish.id,
                 name: dish.name,
                 description: dish.description,
@@ -23,10 +22,10 @@ export class DishesService {
                 calories: dish.calories,
                 price: dish.price,
                 image: Buffer.from(dish.imageData).toString('base64'),
-            })
-        })
-        return newDishes
+            }
+        }))
     }
+
 
     async createDish(dtoDish, dtoDishImage) {
         const dish = {

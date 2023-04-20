@@ -20,7 +20,6 @@ export class OrdersModel extends Model<OrdersModel, OrdersCreationAttrs> {
     @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
     id: number;
 
-
     @ApiProperty({example: "status", description: "status of order"})
     @Column({type: DataType.BOOLEAN, allowNull: false})
     status: boolean;

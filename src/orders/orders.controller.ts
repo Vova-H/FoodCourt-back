@@ -15,7 +15,7 @@ export class OrdersController {
     @Post("create")
     @ApiOperation({summary: "Creating new order"})
     @ApiResponse({status: 200, type: OrdersModel})
-    async createOrder(@Query() clientId: number, @Body() cart) {
+    async createOrder(@Query() clientId, @Query() dishId, @Query() quantity, @Body() cart) {
         return this.ordersService.createOrder(cart, clientId)
     }
 

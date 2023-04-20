@@ -20,7 +20,6 @@ export class OrdersDishesModel extends Model<OrdersDishesModel> {
     @ApiProperty({example: 1, description: "dish id"})
     dishId: number;
 
-
     @Column({type: DataType.INTEGER})
     @ForeignKey(() => OrdersModel)
     @ApiProperty({example: 1, description: "order id"})

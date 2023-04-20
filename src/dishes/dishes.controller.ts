@@ -14,7 +14,6 @@ export class DishesController {
     @Get()
     @ApiOperation({summary: "Getting all dishes"})
     @ApiResponse({status: 200, type: [DishesModel]})
-
     async getAllDishes() {
         return this.dishesService.getAllDishes()
     }

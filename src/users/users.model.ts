@@ -7,6 +7,7 @@ import {DishesModel} from "../dishes/dishes.model";
 import {FavoritesModel} from "../pivotTables/favorites.model";
 import {IsOptional} from "class-validator";
 import {OrdersModel} from "../orders/orders.model";
+import {CartsModel} from "../carts/carts.model";
 
 
 interface UserCreationAttrs {
@@ -43,4 +44,7 @@ export class UsersModel extends Model<UsersModel, UserCreationAttrs> {
 
     @HasMany(() => OrdersModel)
     orders: OrdersModel[]
+
+    @HasMany(() => CartsModel)
+    cartItems: CartsModel[]
 }

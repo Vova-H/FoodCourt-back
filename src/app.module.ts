@@ -12,16 +12,17 @@ import {DishesController} from './dishes/dishes.controller';
 import {DishesModule} from './dishes/dishes.module';
 import {DishesModel} from "./dishes/dishes.model";
 import {UsersController} from "./users/users.controller";
-import { AvatarsModule } from './avatars/avatars.module';
+import {AvatarsModule} from './avatars/avatars.module';
 import {AvatarsController} from "./avatars/avatars.controller";
 import {AvatarsModel} from "./avatars/avatarts.model";
 import {FavoritesModel} from "./pivotTables/favorites.model";
-import { OrdersController } from './orders/orders.controller';
-import { OrdersService } from './orders/orders.service';
-import { OrdersModule } from './orders/orders.module';
+import {OrdersController} from './orders/orders.controller';
+import {OrdersModule} from './orders/orders.module';
 import {OrdersModel} from "./orders/orders.model";
 import {OrdersDishesModel} from "./pivotTables/Orders_Dishes.model";
-
+import {CartsController} from './carts/carts.controller';
+import {CartsModule} from './carts/carts.module';
+import {CartsModel} from "./carts/carts.model";
 
 
 @Module({
@@ -36,7 +37,7 @@ import {OrdersDishesModel} from "./pivotTables/Orders_Dishes.model";
             username: process.env.POSTGRES_USER,
             password: process.env.POSTGRES_PASSWORD,
             database: process.env.POSTGRES_DB,
-            models: [UsersModel, RolesModel, UsersRolesModel, DishesModel, AvatarsModel, FavoritesModel, OrdersModel, OrdersDishesModel],
+            models: [UsersModel, RolesModel, UsersRolesModel, DishesModel, AvatarsModel, FavoritesModel, OrdersModel, OrdersDishesModel, CartsModel],
             autoLoadModels: true
         }),
         UsersModule,
@@ -45,8 +46,9 @@ import {OrdersDishesModel} from "./pivotTables/Orders_Dishes.model";
         DishesModule,
         AvatarsModule,
         OrdersModule,
+        CartsModule,
     ],
-    controllers: [DishesController, UsersController, AvatarsController, OrdersController],
+    controllers: [DishesController, UsersController, AvatarsController, OrdersController, CartsController],
 })
 
 export class AppModule {

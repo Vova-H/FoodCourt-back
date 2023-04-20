@@ -13,7 +13,6 @@ export class OrdersService {
     }
 
     async createOrder(cart, clientId) {
-        cart = cart.flat(1)
         try {
             const createDIshOrderHandler = async (orderId, product) => {
                 await OrdersDishesModel.create({
@@ -46,7 +45,6 @@ export class OrdersService {
         return await OrdersModel.findAll({
             where: {clientId: dto.clientId},
             include: [{model: DishesModel, attributes: ["name", "price"]}],
-
         })
     }
 }
