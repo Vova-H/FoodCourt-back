@@ -1,6 +1,7 @@
 import {Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {AvatarsModel} from "./avatarts.model";
+import {find} from "rxjs";
 
 @Injectable()
 export class AvatarsService {
@@ -23,6 +24,15 @@ export class AvatarsService {
 
     async createAvatar(value, userId) {
         return this.avatarModel.create({value: value.buffer, userId: userId})
+    }
+
+    async changeAvatar(value, userId) {
+        const avatar = await AvatarsModel.findOne({where: {userId: userId}})
+        await avatar.update({value: value.buffer})
+        await avatar.save()
+        return {
+            avatar: Buffer.from(avatar.value).toString('base64')
+        }
     }
 
 }

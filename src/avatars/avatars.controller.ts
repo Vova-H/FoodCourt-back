@@ -21,9 +21,9 @@ export class AvatarsController {
 
 
     @UseInterceptors(FileInterceptor('value'))
-    @Post()
-    async createAvatar(@UploadedFile() value, @Body() userId) {
-        return this.avatarService.createAvatar(value, userId)
+    @Post("/change")
+    async changeAvatar(@UploadedFile() value, @Body() dto) {
+        return this.avatarService.changeAvatar(value, dto.userId)
     }
 
 }

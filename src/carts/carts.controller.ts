@@ -18,7 +18,7 @@ export class CartsController {
     @Post("add")
     @ApiOperation({summary: "add item into cart"})
     @ApiResponse({status: 200, type: [CartsModel]})
-    async addToCart(@Body() dto) { // dishId, userId, quantity
+    async addToCart(@Body() dto) {
         return this.cartService.addToCart(dto)
     }
 
