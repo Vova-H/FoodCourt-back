@@ -1,7 +1,6 @@
 import {Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {AvatarsModel} from "./avatarts.model";
-import {find} from "rxjs";
 
 @Injectable()
 export class AvatarsService {
@@ -23,7 +22,7 @@ export class AvatarsService {
     }
 
     async createAvatar(value, userId) {
-        return this.avatarModel.create({value: value.buffer, userId: userId})
+        return this.avatarModel.create({value: value, userId: userId})
     }
 
     async changeAvatar(value, userId) {

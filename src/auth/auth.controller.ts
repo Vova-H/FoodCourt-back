@@ -24,10 +24,9 @@ export class AuthController {
 
     @ApiOperation({summary: "Registration new user"})
     @ApiResponse({status: 200, type: UsersModel})
-    @UseInterceptors(FileInterceptor('avatar'))
     @Post("/registration")
-    async registration(@Body() dto: RegistrationDto, @UploadedFile() avatar) {
-        return this.authService.registration(dto, avatar)
+    async registration(@Body() dto) {
+        return this.authService.registration(dto)
     }
 
 }

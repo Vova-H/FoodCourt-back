@@ -5,8 +5,8 @@ import {UsersModel} from "../users/users.model";
 import * as bcrypt from "bcryptjs"
 import {InjectModel} from "@nestjs/sequelize";
 import {LoginDto} from "./dto/login.dto";
-import {AvatarsModel} from "../avatars/avatarts.model";
 import {AvatarsService} from "../avatars/avatars.service";
+import * as fs from "fs";
 
 @Injectable()
 export class AuthService {
@@ -39,15 +39,16 @@ export class AuthService {
         throw new UnauthorizedException({message: "Wrong password or email"})
     }
 
-    async registration(dto, dtoAvatar) {
+    async registration(dto) {
         const dtoEmail = dto.email
         const candidate = await UsersModel.findAll({where: {email: dtoEmail}})
+        const emptyAvatar = fs.readFileSync(`src/assets/images/emptyAvatar.png`);
         if (candidate.length !== 0) {
             throw new HttpException("The user with such email is already exist", HttpStatus.BAD_REQUEST)
         }
         const hashedPassword = await bcrypt.hash(dto.password, 5)
         const user = await this.userService.createUser({...dto, password: hashedPassword})
-        await this.avatarService.createAvatar(dtoAvatar, user.id);
+        await this.avatarService.createAvatar(emptyAvatar, user.id);
         await user.save()
         throw new HttpException("The user has been created successfully", HttpStatus.CREATED)
     }
