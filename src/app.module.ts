@@ -23,6 +23,9 @@ import {OrdersDishesModel} from "./pivotTables/Orders_Dishes.model";
 import {CartsController} from './carts/carts.controller';
 import {CartsModule} from './carts/carts.module';
 import {CartsModel} from "./carts/carts.model";
+import { CurrenciesController } from './currencies/currencies.controller';
+import { CurrenciesService } from './currencies/currencies.service';
+import { CurrenciesModule } from './currencies/currencies.module';
 
 
 @Module({
@@ -47,8 +50,10 @@ import {CartsModel} from "./carts/carts.model";
         AvatarsModule,
         OrdersModule,
         CartsModule,
+        CurrenciesModule,
     ],
-    controllers: [DishesController, UsersController, AvatarsController, OrdersController, CartsController],
+    controllers: [DishesController, UsersController, AvatarsController, OrdersController, CartsController, CurrenciesController],
+    providers: [CurrenciesService],
 })
 
 export class AppModule {

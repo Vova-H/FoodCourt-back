@@ -33,7 +33,7 @@ export class AuthService {
                 roles: user.roles
             }
             return {
-                token: this.jwtService.sign(payload)
+                token: this.jwtService.sign(payload),
             }
         }
         throw new UnauthorizedException({message: "Wrong password or email"})

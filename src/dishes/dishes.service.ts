@@ -4,6 +4,7 @@ import {DishesModel} from "./dishes.model";
 import {FavoritesModel} from "../pivotTables/favorites.model";
 
 
+
 @Injectable()
 export class DishesService {
     constructor(@InjectModel(DishesModel)
@@ -13,6 +14,7 @@ export class DishesService {
 
     async getAllDishes() {
         const allDishes = await DishesModel.findAll()
+
         return allDishes.map((dish => {
             return {
                 id: dish.id,
