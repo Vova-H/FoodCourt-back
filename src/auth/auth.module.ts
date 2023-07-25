@@ -8,10 +8,11 @@ import {UsersModel} from "../users/users.model";
 import {SequelizeModule} from "@nestjs/sequelize";
 import {RolesModule} from "../roles/roles.module";
 import {AvatarsModule} from "../avatars/avatars.module";
+import {TranslationService} from "../translation/translation.service";
 
 @Module({
     controllers: [AuthController],
-    providers: [AuthService],
+    providers: [AuthService, TranslationService],
     imports: [
         forwardRef(() => UsersModule),
         JwtModule.register({

@@ -3,16 +3,21 @@ import {OrdersModel} from "./orders.model";
 import {InjectModel} from "@nestjs/sequelize";
 import {OrdersDishesModel} from "../pivotTables/Orders_Dishes.model";
 import {DishesModel} from "../dishes/dishes.model";
+import {TranslationService} from "../translation/translation.service";
 
 @Injectable()
 export class OrdersService {
 
     constructor(@InjectModel(OrdersModel)
                 private orderService: typeof OrdersService,
+                private translationService: TranslationService
     ) {
     }
 
-    async createOrder(cart, clientId) {
+    async createOrder(cart, clientId, lang) {
+        if (lang === "ua") {
+            lang = "uk"
+        }
         try {
             const createDIshOrderHandler = async (orderId, product) => {
                 await OrdersDishesModel.create({
@@ -33,7 +38,7 @@ export class OrdersService {
             cart.forEach(product => {
                 createDIshOrderHandler(order.dataValues.id, product)
             })
-            return {"message": "You order was been created successfully"}
+            return {"message": await this.translationService.translateText("You order was been created successfully", lang)}
 
         } catch (e) {
             throw new HttpException("Bad request", 400)
@@ -42,9 +47,19 @@ export class OrdersService {
     }
 
     async getOrderByClientId(dto) {
-        return await OrdersModel.findAll({
+        if (dto.lang === "ua") {
+            dto.lang = "uk"
+        }
+        const orders = await OrdersModel.findAll({
             where: {clientId: dto.clientId},
             include: [{model: DishesModel, attributes: ["name", "price"]}],
-        })
+        });
+        for (const order of orders) {
+            for (const dish of order.dataValues.dishes) {
+                dish.dataValues.name = await this.translationService.translateText(dish.dataValues.name, dto.lang);
+            }
+        }
+
+        return orders;
     }
 }

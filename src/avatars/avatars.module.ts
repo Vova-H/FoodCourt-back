@@ -4,12 +4,12 @@ import {AvatarsService} from './avatars.service';
 import {AvatarsModel} from "./avatarts.model";
 import {SequelizeModule} from "@nestjs/sequelize";
 import {UsersModel} from "../users/users.model";
-import {BelongsTo} from "sequelize-typescript";
+import {JwtService} from "@nestjs/jwt";
 
 
 @Module({
     controllers: [AvatarsController],
-    providers: [AvatarsService],
+    providers: [AvatarsService, JwtService],
     imports: [
         SequelizeModule.forFeature([UsersModel, AvatarsModel]),
     ],

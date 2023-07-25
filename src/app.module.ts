@@ -26,6 +26,8 @@ import {CartsModel} from "./carts/carts.model";
 import { CurrenciesController } from './currencies/currencies.controller';
 import { CurrenciesService } from './currencies/currencies.service';
 import { CurrenciesModule } from './currencies/currencies.module';
+import {TranslationService} from "./translation/translation.service";
+import {TranslationModule} from "./translation/translation.module";
 
 
 @Module({
@@ -51,9 +53,10 @@ import { CurrenciesModule } from './currencies/currencies.module';
         OrdersModule,
         CartsModule,
         CurrenciesModule,
+        TranslationModule
     ],
     controllers: [DishesController, UsersController, AvatarsController, OrdersController, CartsController, CurrenciesController],
-    providers: [CurrenciesService],
+    providers: [CurrenciesService, TranslationService],
 })
 
 export class AppModule {

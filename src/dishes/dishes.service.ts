@@ -2,30 +2,35 @@ import {Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {DishesModel} from "./dishes.model";
 import {FavoritesModel} from "../pivotTables/favorites.model";
-
+import {TranslationService} from "../translation/translation.service";
 
 
 @Injectable()
 export class DishesService {
     constructor(@InjectModel(DishesModel)
-                private dishesModel: typeof DishesModel
+                private dishesModel: typeof DishesModel,
+                private translationService: TranslationService
     ) {
     }
 
-    async getAllDishes() {
+    async getAllDishes(lang) {
         const allDishes = await DishesModel.findAll()
-
-        return allDishes.map((dish => {
-            return {
-                id: dish.id,
-                name: dish.name,
-                description: dish.description,
-                weight: dish.weight,
-                calories: dish.calories,
-                price: dish.price,
-                image: Buffer.from(dish.imageData).toString('base64'),
-            }
-        }))
+        if (lang === "ua") {
+            lang = "uk"
+        }
+        return await Promise.all(
+            allDishes.map(async (dish) => {
+                return {
+                    id: dish.id,
+                    name: await this.translationService.translateText(dish.name, lang),
+                    description: await this.translationService.translateText(dish.description, lang),
+                    weight: dish.weight,
+                    calories: dish.calories,
+                    price: dish.price,
+                    image: Buffer.from(dish.imageData).toString('base64'),
+                };
+            }),
+        );
     }
 
 
@@ -40,7 +45,7 @@ export class DishesService {
     }
 
     async getImageById(id) {
-        const dish = await DishesModel.findOne({where: id})
+        const dish = await DishesModel.findOne({where: {id: id}})
         const b64 = Buffer.from(dish.imageData).toString('base64');
         return `<img src="data:image/jpeg;base64,${b64}"  alt="img"/>`
     }

@@ -1,5 +1,5 @@
 import {ApiProperty} from "@nestjs/swagger";
-import {IsEmail, IsEmpty, IsNotEmpty, IsOptional, IsString, Length} from "class-validator";
+import {IsEmail, IsNotEmpty, IsString, Length} from "class-validator";
 
 
 export class RegistrationDto {
@@ -18,7 +18,4 @@ export class RegistrationDto {
     @IsNotEmpty({message: "Field can't be empty"})
     @IsString({message: "Password must be string"})
     readonly password: string
-
-    @ApiProperty({example: "image Object", description: "avatar image"})
-    readonly avatar: string
 }

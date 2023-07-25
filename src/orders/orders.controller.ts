@@ -1,11 +1,10 @@
-import {Body, Controller, Get, Param, Post, Query} from '@nestjs/common';
+import {Body, Controller, Get, Post, Query, UseGuards} from '@nestjs/common';
 import {ApiOperation, ApiResponse} from "@nestjs/swagger";
-import {UsersModel} from "../users/users.model";
-import {RegistrationDto} from "../auth/dto/registration.dto";
-import {UsersService} from "../users/users.service";
 import {OrdersService} from "./orders.service";
 import {OrdersModel} from "./orders.model";
+import {AuthGuard} from "../auth/auth.guard";
 
+@UseGuards(AuthGuard)
 @Controller('orders')
 export class OrdersController {
 
@@ -15,8 +14,8 @@ export class OrdersController {
     @Post("create")
     @ApiOperation({summary: "Creating new order"})
     @ApiResponse({status: 200, type: OrdersModel})
-    async createOrder(@Query() clientId, @Query() dishId, @Query() quantity, @Body() cart) {
-        return this.ordersService.createOrder(cart, clientId)
+    async createOrder(@Query() clientId, @Body() cart, @Query("lang") lang) {
+        return this.ordersService.createOrder(cart, clientId, lang)
     }
 
     @Get("getOrderByClientId")

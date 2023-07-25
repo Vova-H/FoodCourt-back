@@ -18,7 +18,7 @@ export class UsersService {
     }
 
     async getUserById(id) {
-        const user = await this.userModel.findOne({where: {id: id.id}, include: {all: true}})
+        const user = await this.userModel.findOne({where: {id: id}, include: {all: true}})
         if (!user) {
             throw new HttpException("There are no users with such id", HttpStatus.BAD_REQUEST)
         }

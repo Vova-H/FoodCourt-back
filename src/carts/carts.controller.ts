@@ -1,8 +1,10 @@
-import {Body, Controller, Get, Post, Query} from '@nestjs/common';
+import {Body, Controller, Get, Post, Query, UseGuards} from '@nestjs/common';
 import {CartsService} from "./carts.service";
 import {ApiOperation, ApiResponse} from "@nestjs/swagger";
 import {CartsModel} from "./carts.model";
+import {AuthGuard} from "../auth/auth.guard";
 
+@UseGuards(AuthGuard)
 @Controller('carts')
 export class CartsController {
     constructor(private cartService: CartsService) {

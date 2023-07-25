@@ -1,10 +1,9 @@
-import {BelongsToMany, Column, DataType, HasMany, Model, Table} from "sequelize-typescript";
+import {BelongsToMany, Column, DataType, Model, Table} from "sequelize-typescript";
 import {ApiProperty} from "@nestjs/swagger";
 import {UsersModel} from "../users/users.model";
 import {FavoritesModel} from "../pivotTables/favorites.model";
 import {OrdersDishesModel} from "../pivotTables/Orders_Dishes.model";
 import {OrdersModel} from "../orders/orders.model";
-import {CartsModel} from "../carts/carts.model";
 
 
 interface DishCreationAttrs {

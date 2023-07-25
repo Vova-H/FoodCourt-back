@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "foodcourt-393109",
+  "private_key_id": "818d0aa1bcac91e954fd551582417a2f98ea2b59",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCR9h/YhwwHKoKz\nZ7AfueLCpE/QjZzpikbVBgsesoeeT/YSdLtbu+Rrv85knIENoLAFI9dL2LKl/rXX\ndsRiEdxRzCvLmX6GR2IwcZuLwLnOHDDWnnmPTbo/GiSWHDDNb4/GU90dxUV31XM7\nUI5ulnvE5I5bSqaqxGJI0T++OGVlv8sGPkvRbkM1ENtX61hB0a/r/lWyYLAI60sG\n+2FbqQh/GHdzIA7/noSJvXvHgm2aFGAT8FLkNalLey5Ust+ywKgyBvGRMT+XBPOe\nbWaswwSPsRD1xKePNGGcP6WTg0p/1GPzoOTVCHeswSuHPfByUhB8mexJVCwq9fDn\neGpXST1TAgMBAAECggEABbDSmQf/cqATrHOLUX8OHtEtLuJkRcD70WwXLuXHlYut\nsTsWuvCVRm9Q2GmlFnBb9aUOqBs550wKHci4fat9Kz2KT5T3BQXK4xgPZeBWAsLk\n5bSmUlsjccrzbRNmAo68XtrbVYoXt45Y5TZE0sb06qv9aOAPXJda81ay5TyOOcfZ\nIXB9KGOe7MSjG5lcq2EKmUifbtjyGENPYZVZNhxhjgNNgUwdx77BvkGCpYJX6rhk\nVXVYRdAuBlq2YjS2A1stDwjVoJJRay/O3ExY8FLnD4e77onTIsmsd+Pgk+zYekdq\nQwLsGOimyxKmptrE5Z3xpbMBl/8owMj+ohJVWuj7QQKBgQDL6+JaCCAB8Q3ZOArE\nulFMXoT4OXdThToipm8hD/ZBA0PF1FTH9XB5wHZTgZRcGL6bscC90jED0voFNEPD\n6zyhzGAp+WZwEOxptjHHJK9scoa3tG3sfzlt8ArQogF0Z25l0HaLGDKVAR7vXwrA\nATgigTys+6aC7vmDJ9VuIHwSYwKBgQC3POQr+vqt49gyVdF+A64p5X2HqZg6PimX\n3uomW5G4rGFLZRgHlyLt6nkE0XeWMYYuoO/jauJlyD0+Y7WXfjqsQxxkzsmqpW7B\nM5G/o76x1W+BTdC81UYN8APHFGcH5+rKZYQJ1N0DtBr6MhOcfnFIgOx5tsYeQw2i\nQYAtLsCkUQKBgQCSWs2tyD8Qpa1GxU4VO5O1t/C/Jp9ZtjivPbxsgkQ/DNTLW0Ut\n7h23hEZoUIvmPWwv2jd3BTBgij8fFQ+9wUtW5JPwDCtVKxBCHp1DTDULJHdDyZ9L\nKVRSbwGUE3Hv1XwKXr91vPwwrQlCy3evrjBXs2GU1VgAiPtTAnfP/kiN+QKBgQC2\nRTzXPt4zMUzyrQkpp7GMfXrEAwCpFwK6zoPuSfIHWHmjzNj9W+rj7PQaxd6GKZdH\nNNHLT5wLEQdS005kdq0Yg91vrX9PXyZvysN1dQWQ0jYL0oMMA76eyJyJYJMoexrD\n3/1a5kI/l92p+Twm1GQNcilI3XXvzlV2jF9bEoGQMQKBgQCHcraB0aQ3HAy1y005\nlhoq+uECW/5ycxw9HvJxKaU8fA7ufL2pc9YMtngf3g0uMv8QQNpI9LaBaoioa/Eq\n0n21fbeeglg2UNm7kiPN+BYvULbxtSZrf/GOyZ9FSnAtw5TJ0fy95cIl9iAGIL9i\nxuKdEvepCeCImsZl6RQPjrrUvg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "foodcourt@foodcourt-393109.iam.gserviceaccount.com",
+  "client_id": "112894562074804956638",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/foodcourt%40foodcourt-393109.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
