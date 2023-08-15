@@ -50,4 +50,11 @@ export class UsersService {
         }
         throw new HttpException("The role was added successfully", HttpStatus.ACCEPTED)
     }
+
+    async changeDiscountStatus(user_id: number) {
+        const user = await UsersModel.findOne({where: {id: user_id}})
+        user.discount_is_using = true
+        await user.save()
+        throw new HttpException("The status of discount was been change successfully", HttpStatus.ACCEPTED)
+    }
 }

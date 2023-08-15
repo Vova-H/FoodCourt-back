@@ -23,9 +23,9 @@ import {OrdersDishesModel} from "./pivotTables/Orders_Dishes.model";
 import {CartsController} from './carts/carts.controller';
 import {CartsModule} from './carts/carts.module';
 import {CartsModel} from "./carts/carts.model";
-import { CurrenciesController } from './currencies/currencies.controller';
-import { CurrenciesService } from './currencies/currencies.service';
-import { CurrenciesModule } from './currencies/currencies.module';
+import {CurrenciesController} from './currencies/currencies.controller';
+import {CurrenciesService} from './currencies/currencies.service';
+import {CurrenciesModule} from './currencies/currencies.module';
 import {TranslationService} from "./translation/translation.service";
 import {TranslationModule} from "./translation/translation.module";
 
@@ -53,10 +53,10 @@ import {TranslationModule} from "./translation/translation.module";
         OrdersModule,
         CartsModule,
         CurrenciesModule,
-        TranslationModule
+        TranslationModule,
     ],
     controllers: [DishesController, UsersController, AvatarsController, OrdersController, CartsController, CurrenciesController],
-    providers: [CurrenciesService, TranslationService],
+    providers: [CurrenciesService, TranslationService]
 })
 
 export class AppModule {

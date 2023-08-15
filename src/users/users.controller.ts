@@ -17,7 +17,7 @@ export class UsersController {
     @Get()
     @ApiOperation({summary: "Getting all users"})
     @ApiResponse({status: 200, type: [UsersModel]})
-    // @UseGuards(AuthGuard)
+    @UseGuards(AuthGuard)
     // @Roles("ADMIN")
     // @UseGuards(RolesGuard)
     async getAllUsers() {
@@ -38,7 +38,6 @@ export class UsersController {
         return this.userService.createUser(dto)
     }
 
-
     @Post("/add_role")
     @UseGuards(AuthGuard)
     @ApiOperation({summary: "Adding a role"})
@@ -47,5 +46,9 @@ export class UsersController {
         return this.userService.addRole(dto)
     }
 
+    @Post("/use_discount/:id")
+    async changeDiscountStatus(@Param('id') id: number) {
+        return this.userService.changeDiscountStatus(id)
+    }
 
 }

@@ -9,7 +9,8 @@ interface OrdersCreationAttrs {
     status: boolean
     date: string
     time: string
-    clientId: number
+    clientId: number,
+    discount: boolean
 }
 
 @Table({
@@ -31,6 +32,10 @@ export class OrdersModel extends Model<OrdersModel, OrdersCreationAttrs> {
     @ApiProperty({example: "10:00", description: "time of order"})
     @Column({type: DataType.TIME, allowNull: false})
     time: string;
+
+    @ApiProperty({example: true, description: "discount was used or not"})
+    @Column({type: DataType.BOOLEAN, allowNull: false, defaultValue: false})
+    discount: boolean;
 
     @ForeignKey(() => UsersModel)
     clientId: number

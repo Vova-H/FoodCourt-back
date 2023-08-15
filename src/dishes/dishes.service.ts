@@ -22,6 +22,8 @@ export class DishesService {
             allDishes.map(async (dish) => {
                 return {
                     id: dish.id,
+                    // name: dish.name,
+                    // description: dish.description,
                     name: await this.translationService.translateText(dish.name, lang),
                     description: await this.translationService.translateText(dish.description, lang),
                     weight: dish.weight,

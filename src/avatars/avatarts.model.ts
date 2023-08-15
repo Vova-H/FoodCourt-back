@@ -1,7 +1,6 @@
 import {BelongsTo, Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
 import {ApiProperty} from "@nestjs/swagger";
 import {UsersModel} from "../users/users.model";
-import {IsOptional} from "class-validator";
 
 
 interface AvatarCreationAttrs {

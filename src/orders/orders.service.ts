@@ -14,7 +14,7 @@ export class OrdersService {
     ) {
     }
 
-    async createOrder(cart, clientId, lang) {
+    async createOrder(cart, clientId, lang, discount) {
         if (lang === "ua") {
             lang = "uk"
         }
@@ -33,7 +33,8 @@ export class OrdersService {
                 clientId: clientId.clientId,
                 status: false,
                 date: dateOrder,
-                time: timeOrder
+                time: timeOrder,
+                discount: discount
             })
             cart.forEach(product => {
                 createDIshOrderHandler(order.dataValues.id, product)
@@ -59,7 +60,6 @@ export class OrdersService {
                 dish.dataValues.name = await this.translationService.translateText(dish.dataValues.name, dto.lang);
             }
         }
-
         return orders;
     }
 }
