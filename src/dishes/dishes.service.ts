@@ -13,7 +13,7 @@ export class DishesService {
     ) {
     }
 
-    async getAllDishes(lang) {
+    async getAllDishes(lang: string) {
         const allDishes = await DishesModel.findAll()
         if (lang === "ua") {
             lang = "uk"
@@ -33,6 +33,46 @@ export class DishesService {
                 };
             }),
         );
+    }
+
+    async getDishesByKeywords(lang: string, keywords: string) {
+        const allDishes = await DishesModel.findAll();
+
+        if (lang === "ua") {
+            lang = "uk";
+        }
+
+        if (lang !== "en") {
+            const keywordsEng = await this.translationService.translateText(keywords, "en");
+            var searchTerms = keywordsEng.toLowerCase().split(' ');
+        } else {
+            var searchTerms = keywords.toLowerCase().split(' ');
+        }
+
+        const result = await Promise.all(
+            allDishes.map(async (dish) => {
+                const containsKeyword = searchTerms.some(term =>
+                    dish.name.toLowerCase().includes(term) || dish.description.toLowerCase().includes(term)
+                );
+
+                if (containsKeyword) {
+                    const translatedName = await this.translationService.translateText(dish.name, lang);
+                    const translatedDescription = await this.translationService.translateText(dish.description, lang);
+                    return {
+                        id: dish.id,
+                        name: translatedName,
+                        description: translatedDescription,
+                        weight: dish.weight,
+                        calories: dish.calories,
+                        price: dish.price,
+                        image: Buffer.from(dish.imageData).toString('base64'),
+                    };
+                } else {
+                    return null;
+                }
+            })
+        );
+        return result.filter(el => el !== null)
     }
 
 

@@ -1,9 +1,21 @@
-import {Body, Controller, Get, Param, Post, Query, UploadedFile, UseGuards, UseInterceptors} from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    Param,
+    Post,
+    Query,
+    UploadedFile,
+    UseGuards,
+    UseInterceptors,
+    UsePipes
+} from '@nestjs/common';
 import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {DishesService} from "./dishes.service";
 import {DishesModel} from "./dishes.model";
 import {FileInterceptor} from "@nestjs/platform-express";
 import {AuthGuard} from "../auth/auth.guard";
+import {ValidationPipe} from "../pipes/validation.pipe";
 
 
 @ApiTags("Dishes")
@@ -15,9 +27,18 @@ export class DishesController {
     @Get()
     @ApiOperation({summary: "Getting all dishes"})
     @ApiResponse({status: 200, type: [DishesModel]})
-    async getAllDishes(@Query('lang') lang) {
+    async getAllDishes(@Query('lang') lang: string) {
         return this.dishesService.getAllDishes(lang)
     }
+
+    @UsePipes(ValidationPipe)
+    @Post("/search")
+    @ApiOperation({summary: "Getting dishes by keywords"})
+    @ApiResponse({status: 200, type: [DishesModel]})
+    async getDishesByKeywords(@Query('lang') lang: string, @Query('words') words: string) {
+        return this.dishesService.getDishesByKeywords(lang, words)
+    }
+
 
     @Get(":id")
     async getImageById(@Param("id") id: number) {
