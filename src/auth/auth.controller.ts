@@ -21,7 +21,7 @@ export class AuthController {
     @ApiOperation({summary: "Registration new user"})
     @ApiResponse({status: 200, type: UsersModel})
     @Post("/registration")
-    async registration(@Body() dto, @Query('lang') lang) {
+    async registration(@Body() dto, @Query('lang') lang: string) {
         return this.authService.registration(dto, lang)
     }
 

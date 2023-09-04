@@ -36,7 +36,7 @@ export class UsersService {
     async createUser(dto: RegistrationDto) {
         const user = await UsersModel.create(dto)
         const role = await this.roleService.getRoleByValue("USER")
-        await user.$set('roles', [role.id])
+        await user.$add('roles', [role.id])
         user.roles = [role]
         await user.save()
         return user
@@ -47,8 +47,10 @@ export class UsersService {
         const role = await this.roleService.getRoleByValue(dto.role)
         if (user && role) {
             await user.$add("role", (await role).id)
+            throw new HttpException("The role was added successfully", HttpStatus.ACCEPTED)
+        }else {
+            throw new HttpException("The are no such role or user", HttpStatus.ACCEPTED)
         }
-        throw new HttpException("The role was added successfully", HttpStatus.ACCEPTED)
     }
 
     async changeDiscountStatus(user_id: number) {

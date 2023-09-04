@@ -1,8 +1,10 @@
-import {Injectable} from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {InjectModel} from "@nestjs/sequelize";
 import {DishesModel} from "./dishes.model";
 import {FavoritesModel} from "../pivotTables/favorites.model";
 import {TranslationService} from "../translation/translation.service";
+import {UsersModel} from "../users/users.model";
+import {RolesModel} from "../roles/roles.model";
 
 
 @Injectable()
@@ -13,8 +15,30 @@ export class DishesService {
     ) {
     }
 
-    async getAllDishes(lang: string) {
-        const allDishes = await DishesModel.findAll()
+    async getAllDishes(lang: string, userId: string) {
+        const user = await UsersModel.findOne({
+            where: {id: userId},
+            include: {model: RolesModel}
+        })
+        const roles = user ? user.roles.map(role => {
+            return role.dataValues.role
+        }) : ["USER"]
+        let allDishes;
+        if (roles.includes("ADMIN")) {
+            allDishes = await DishesModel.findAll({
+                order: [
+                    ["isActive", "DESC"],
+                    ["id", "ASC"]
+                ]
+            });
+        } else {
+            allDishes = await DishesModel.findAll({
+                where: {isActive: true},
+                order: [
+                    ["id", "ASC"]
+                ]
+            });
+        }
         if (lang === "ua") {
             lang = "uk"
         }
@@ -22,22 +46,40 @@ export class DishesService {
             allDishes.map(async (dish) => {
                 return {
                     id: dish.id,
-                    // name: dish.name,
-                    // description: dish.description,
                     name: await this.translationService.translateText(dish.name, lang),
                     description: await this.translationService.translateText(dish.description, lang),
                     weight: dish.weight,
                     calories: dish.calories,
                     price: dish.price,
+                    isActive: dish.isActive,
                     image: Buffer.from(dish.imageData).toString('base64'),
                 };
             }),
         );
     }
 
-    async getDishesByKeywords(lang: string, keywords: string) {
-        const allDishes = await DishesModel.findAll();
-
+    async getDishesByKeywords(lang: string, keywords: string, userId: string) {
+        const user = await UsersModel.findOne({
+            where: {id: userId},
+            include: {model: RolesModel}
+        })
+        const roles = user ? user.roles.map(role => {
+            return role.dataValues.role
+        }) : ["USER"]
+        let allDishes;
+        if (roles.includes("ADMIN")) {
+            allDishes = await DishesModel.findAll({
+                order: [
+                    ["isActive", "DESC"],
+                    ["id", "ASC"]
+                ]
+            });
+        } else {
+            allDishes = await DishesModel.findAll({
+                where: {isActive: true},
+                order: [["id", "ASC"]]
+            });
+        }
         if (lang === "ua") {
             lang = "uk";
         }
@@ -54,7 +96,6 @@ export class DishesService {
                 const containsKeyword = searchTerms.some(term =>
                     dish.name.toLowerCase().includes(term) || dish.description.toLowerCase().includes(term)
                 );
-
                 if (containsKeyword) {
                     const translatedName = await this.translationService.translateText(dish.name, lang);
                     const translatedDescription = await this.translationService.translateText(dish.description, lang);
@@ -65,6 +106,7 @@ export class DishesService {
                         weight: dish.weight,
                         calories: dish.calories,
                         price: dish.price,
+                        isActive: dish.isActive,
                         image: Buffer.from(dish.imageData).toString('base64'),
                     };
                 } else {
@@ -75,6 +117,26 @@ export class DishesService {
         return result.filter(el => el !== null)
     }
 
+    async hideDish(dishId: string) {
+        const dish = await DishesModel.findOne({
+            where: {
+                id: dishId
+            }
+        })
+        dish.isActive = false
+        await dish.save()
+    }
+
+    async showDish(dishId: string) {
+        const dish = await DishesModel.findOne({
+            where: {
+                id: dishId
+            }
+        })
+        dish.isActive = true
+        await dish.save()
+    }
+
 
     async createDish(dtoDish, dtoDishImage) {
         const dish = {
@@ -83,7 +145,7 @@ export class DishesService {
             imageData: dtoDishImage.buffer,
         }
         await DishesModel.create(dish)
-        return dish
+        throw new HttpException("The dish was added successfully", HttpStatus.CREATED)
     }
 
     async getImageById(id) {
@@ -102,30 +164,28 @@ export class DishesService {
         return favorite.status
     }
 
-    async getAllFavoritesDishes({userId}) {
+    async getAllFavoritesDishes({userId}, lang) {
+        if (lang === "ua") {
+            lang = "uk";
+        }
         const favorites = await FavoritesModel.findAll({
-            where: {userId: userId, status: true},
-        })
-        const ids = favorites.map((id) => {
-            return id.dishId
-        })
-        const dishes = await DishesModel.findAll({
-            where: {id: ids}
-        })
+            where: {userId, status: true},
+        });
 
-        const filteredDishes = []
-        dishes.forEach((dish) => {
-            filteredDishes.push({
+        const ids = favorites.map(fav => fav.dishId);
+        const dishes = await this.dishesModel.findAll({
+            where: {id: ids},
+        });
+        return await Promise.all(
+            dishes.map(async dish => ({
                 id: dish.id,
-                name: dish.name,
-                description: dish.description,
+                name: await this.translationService.translateText(dish.name, lang),
+                description: await this.translationService.translateText(dish.description, lang),
                 weight: dish.weight,
                 calories: dish.calories,
                 price: dish.price,
                 image: Buffer.from(dish.imageData).toString('base64'),
-            })
-        })
-        return filteredDishes
+            })));
     }
 
     async addToFavorites(dishId, userId) {

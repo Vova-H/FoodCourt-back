@@ -27,16 +27,28 @@ export class DishesController {
     @Get()
     @ApiOperation({summary: "Getting all dishes"})
     @ApiResponse({status: 200, type: [DishesModel]})
-    async getAllDishes(@Query('lang') lang: string) {
-        return this.dishesService.getAllDishes(lang)
+    async getAllDishes(@Query('lang') lang: string, @Query('userId') userId: string) {
+        return this.dishesService.getAllDishes(lang, userId)
     }
 
     @UsePipes(ValidationPipe)
     @Post("/search")
     @ApiOperation({summary: "Getting dishes by keywords"})
     @ApiResponse({status: 200, type: [DishesModel]})
-    async getDishesByKeywords(@Query('lang') lang: string, @Query('words') words: string) {
-        return this.dishesService.getDishesByKeywords(lang, words)
+    async getDishesByKeywords(@Query('lang') lang: string, @Query('words') words: string, @Query('userId') userId: string) {
+        return this.dishesService.getDishesByKeywords(lang, words, userId)
+    }
+
+    @Post("/hide/:id")
+    @ApiOperation({summary: "Change visibility on hide"})
+    async hideDish(@Param('id') dishId: string) {
+        return this.dishesService.hideDish(dishId)
+    }
+
+    @Post("/show/:id")
+    @ApiOperation({summary: "Change visibility on show"})
+    async showDish(@Param('id') dishId: string) {
+        return this.dishesService.showDish(dishId)
     }
 
 
@@ -46,12 +58,13 @@ export class DishesController {
     }
 
     @UseGuards(AuthGuard)
-    @Post()
+    @Post("/add")
     @UseInterceptors(FileInterceptor('image'))
     @ApiOperation({summary: "Add dish"})
     @ApiResponse({status: 200, type: [DishesModel]})
-    async createDish(@UploadedFile() dtoDishImage, @Body() dtoDish) {
-        return this.dishesService.createDish(dtoDish, dtoDishImage)
+    async createDish(@UploadedFile() image, @Body() dish) {
+        const dtoDish = JSON.parse(dish.dish)
+        return this.dishesService.createDish(dtoDish, image)
     }
 
     @UseGuards(AuthGuard)
@@ -62,8 +75,8 @@ export class DishesController {
 
     @UseGuards(AuthGuard)
     @Get("/favorites/getAll")
-    async getAllFavoritesDishes(@Query() dto) {
-        return await this.dishesService.getAllFavoritesDishes(dto)
+    async getAllFavoritesDishes(@Query() dto, @Query('lang') lang: string) {
+        return await this.dishesService.getAllFavoritesDishes(dto, lang)
     }
 
     @UseGuards(AuthGuard)

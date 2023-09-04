@@ -49,6 +49,10 @@ export class DishesModel extends Model<DishesModel, DishCreationAttrs> {
     @Column({type: DataType.INTEGER, allowNull: false})
     price: number;
 
+    @ApiProperty({example: "true", description: "The dish is  active or not"})
+    @Column({type: DataType.BOOLEAN, allowNull: false, defaultValue: true})
+    isActive: boolean;
+
 
     @BelongsToMany(() => UsersModel, () => FavoritesModel)
     favorites: UsersModel[]

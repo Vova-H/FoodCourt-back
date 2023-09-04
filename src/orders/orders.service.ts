@@ -54,6 +54,7 @@ export class OrdersService {
         const orders = await OrdersModel.findAll({
             where: {clientId: dto.clientId},
             include: [{model: DishesModel, attributes: ["name", "price"]}],
+            order: [["id", "DESC"]]
         });
         for (const order of orders) {
             for (const dish of order.dataValues.dishes) {
