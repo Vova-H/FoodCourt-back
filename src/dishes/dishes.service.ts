@@ -148,10 +148,36 @@ export class DishesService {
         throw new HttpException("The dish was added successfully", HttpStatus.CREATED)
     }
 
-    async getImageById(id) {
-        const dish = await DishesModel.findOne({where: {id: id}})
-        const b64 = Buffer.from(dish.imageData).toString('base64');
-        return `<img src="data:image/jpeg;base64,${b64}"  alt="img"/>`
+    async editDish(dtoDish, dtoDishImage, id) {
+
+        const existingDish = await DishesModel.findOne({where: {id: id.id}});
+
+        if (!existingDish) {
+            throw new HttpException("Dish not found", HttpStatus.NOT_FOUND);
+        }
+        const updatedDish = {
+            ...dtoDish,
+            imageName: dtoDishImage.originalname,
+            imageData: dtoDishImage.buffer,
+        };
+
+        await DishesModel.update(updatedDish, {where: {id: id.id}});
+
+        throw new HttpException("The dish was updated successfully", HttpStatus.OK);
+    }
+
+
+    async getDishById(id: number) {
+        const dish = await DishesModel.findOne({where: {id}})
+        return {
+            id: dish.id,
+            name: dish.name,
+            description: dish.description,
+            weight: dish.weight,
+            calories: dish.calories,
+            price: dish.price,
+            image: Buffer.from(dish.imageData).toString('base64'),
+        }
     }
 
     async checkIsFavorites(dishId, userId) {

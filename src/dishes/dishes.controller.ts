@@ -52,9 +52,9 @@ export class DishesController {
     }
 
 
-    @Get(":id")
-    async getImageById(@Param("id") id: number) {
-        return this.dishesService.getImageById(id)
+    @Get("/:id")
+    async getDishById(@Param("id") id: number) {
+        return this.dishesService.getDishById(id)
     }
 
     @UseGuards(AuthGuard)
@@ -66,6 +66,18 @@ export class DishesController {
         const dtoDish = JSON.parse(dish.dish)
         return this.dishesService.createDish(dtoDish, image)
     }
+
+
+    @UseGuards(AuthGuard)
+    @Post("/edit/:id")
+    @UseInterceptors(FileInterceptor('image'))
+    @ApiOperation({summary: "Edit dish"})
+    @ApiResponse({status: 200, type: [DishesModel]})
+    async editDish(@UploadedFile() image, @Body() dish, @Param() id: number) {
+        const dtoDish = JSON.parse(dish.dish)
+        return this.dishesService.editDish(dtoDish, image, id)
+    }
+
 
     @UseGuards(AuthGuard)
     @Post("/favorites/check")
