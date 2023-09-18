@@ -16,6 +16,8 @@ import {DishesModel} from "./dishes.model";
 import {FileInterceptor} from "@nestjs/platform-express";
 import {AuthGuard} from "../auth/auth.guard";
 import {ValidationPipe} from "../pipes/validation.pipe";
+import {Roles} from "../permissions/roles.decorator";
+import {RolesGuard} from "../permissions/roles.guard";
 
 
 @ApiTags("Dishes")
@@ -39,12 +41,18 @@ export class DishesController {
         return this.dishesService.getDishesByKeywords(lang, words, userId)
     }
 
+    @UseGuards(AuthGuard)
+    @Roles("ADMIN")
+    @UseGuards(RolesGuard)
     @Post("/hide/:id")
     @ApiOperation({summary: "Change visibility on hide"})
     async hideDish(@Param('id') dishId: string) {
         return this.dishesService.hideDish(dishId)
     }
 
+    @UseGuards(AuthGuard)
+    @Roles("ADMIN")
+    @UseGuards(RolesGuard)
     @Post("/show/:id")
     @ApiOperation({summary: "Change visibility on show"})
     async showDish(@Param('id') dishId: string) {
@@ -58,6 +66,8 @@ export class DishesController {
     }
 
     @UseGuards(AuthGuard)
+    @Roles("ADMIN")
+    @UseGuards(RolesGuard)
     @Post("/add")
     @UseInterceptors(FileInterceptor('image'))
     @ApiOperation({summary: "Add dish"})
@@ -69,6 +79,8 @@ export class DishesController {
 
 
     @UseGuards(AuthGuard)
+    @Roles("ADMIN")
+    @UseGuards(RolesGuard)
     @Post("/edit/:id")
     @UseInterceptors(FileInterceptor('image'))
     @ApiOperation({summary: "Edit dish"})

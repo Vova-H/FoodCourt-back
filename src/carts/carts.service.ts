@@ -39,10 +39,6 @@ export class CartsService {
         return await CartsModel.create({dishId: dto.dishId, userId: dto.userId, quantity: dto.quantity})
     }
 
-    async updateCart() {
-
-    }
-
     async removeFromCart(dishId, userId) {
         return CartsModel.destroy({where: {dishId: dishId, userId: userId}})
     }

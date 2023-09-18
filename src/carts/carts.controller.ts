@@ -24,11 +24,6 @@ export class CartsController {
         return this.cartService.addToCart(dto)
     }
 
-    @Post("update")
-    async updateCart() {
-        return this.cartService.updateCart()
-    }
-
     @Post("removeOne")
     async removeFromCart(@Body() dto) {
         return this.cartService.removeFromCart(dto.cartItemId, dto.userId)
