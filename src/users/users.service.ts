@@ -62,12 +62,15 @@ export class UsersService {
             throw new HttpException("There are no users with such id", HttpStatus.BAD_REQUEST)
         }
         return {
+            id: user.id,
             username: user.username,
             email: user.email,
             roles: user.roles,
             avatar: Buffer.from(user.avatar.value).toString('base64'),
             orders: user.orders,
-            cartItems: user.cartItems
+            cartItems: user.cartItems,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt
         }
     }
 
