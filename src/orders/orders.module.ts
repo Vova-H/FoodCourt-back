@@ -7,14 +7,14 @@ import {OrdersDishesModel} from "../pivotTables/Orders_Dishes.model";
 import {JwtService} from "@nestjs/jwt";
 import {TranslationService} from "../translation/translation.service";
 
+
 @Module({
     controllers: [OrdersController],
     providers: [OrdersService, JwtService, TranslationService],
     imports: [
         SequelizeModule.forFeature([OrdersModel, OrdersDishesModel]),
     ],
-    exports: [
-        OrdersService,
-    ]
+    exports: [OrdersService],
 })
-export class OrdersModule {}
+export class OrdersModule {
+}

@@ -10,33 +10,25 @@ import {
     UseInterceptors,
     UsePipes
 } from '@nestjs/common';
-import {ApiOperation, ApiResponse, ApiTags} from "@nestjs/swagger";
 import {DishesService} from "./dishes.service";
-import {DishesModel} from "./dishes.model";
 import {FileInterceptor} from "@nestjs/platform-express";
 import {AuthGuard} from "../auth/auth.guard";
 import {ValidationPipe} from "../pipes/validation.pipe";
 import {Roles} from "../permissions/roles.decorator";
 import {RolesGuard} from "../permissions/roles.guard";
 
-
-@ApiTags("Dishes")
 @Controller('dishes')
 export class DishesController {
     constructor(private dishesService: DishesService) {
     }
 
     @Get()
-    @ApiOperation({summary: "Getting all dishes"})
-    @ApiResponse({status: 200, type: [DishesModel]})
     async getAllDishes(@Query('lang') lang: string, @Query('userId') userId: string) {
         return this.dishesService.getAllDishes(lang, userId)
     }
 
     @UsePipes(ValidationPipe)
     @Post("/search")
-    @ApiOperation({summary: "Getting dishes by keywords"})
-    @ApiResponse({status: 200, type: [DishesModel]})
     async getDishesByKeywords(@Query('lang') lang: string, @Query('words') words: string, @Query('userId') userId: string) {
         return this.dishesService.getDishesByKeywords(lang, words, userId)
     }
@@ -45,7 +37,6 @@ export class DishesController {
     @Roles("ADMIN")
     @UseGuards(RolesGuard)
     @Post("/hide/:id")
-    @ApiOperation({summary: "Change visibility on hide"})
     async hideDish(@Param('id') dishId: string) {
         return this.dishesService.hideDish(dishId)
     }
@@ -54,7 +45,6 @@ export class DishesController {
     @Roles("ADMIN")
     @UseGuards(RolesGuard)
     @Post("/show/:id")
-    @ApiOperation({summary: "Change visibility on show"})
     async showDish(@Param('id') dishId: string) {
         return this.dishesService.showDish(dishId)
     }
@@ -70,8 +60,6 @@ export class DishesController {
     @UseGuards(RolesGuard)
     @Post("/add")
     @UseInterceptors(FileInterceptor('image'))
-    @ApiOperation({summary: "Add dish"})
-    @ApiResponse({status: 200, type: [DishesModel]})
     async createDish(@UploadedFile() image, @Body() dish) {
         const dtoDish = JSON.parse(dish.dish)
         return this.dishesService.createDish(dtoDish, image)
@@ -83,8 +71,6 @@ export class DishesController {
     @UseGuards(RolesGuard)
     @Post("/edit/:id")
     @UseInterceptors(FileInterceptor('image'))
-    @ApiOperation({summary: "Edit dish"})
-    @ApiResponse({status: 200, type: [DishesModel]})
     async editDish(@UploadedFile() image, @Body() dish, @Param() id: number) {
         const dtoDish = JSON.parse(dish.dish)
         return this.dishesService.editDish(dtoDish, image, id)

@@ -1,7 +1,5 @@
 import {Body, Controller, Get, Post, Query, UseGuards} from '@nestjs/common';
 import {CartsService} from "./carts.service";
-import {ApiOperation, ApiResponse} from "@nestjs/swagger";
-import {CartsModel} from "./carts.model";
 import {AuthGuard} from "../auth/auth.guard";
 
 @UseGuards(AuthGuard)
@@ -11,15 +9,11 @@ export class CartsController {
     }
 
     @Get("get")
-    @ApiOperation({summary: "Getting Cart"})
-    @ApiResponse({status: 200, type: [CartsModel]})
     async getCart(@Query() dto) {
         return this.cartService.getCart(dto.userId)
     }
 
     @Post("add")
-    @ApiOperation({summary: "add item into cart"})
-    @ApiResponse({status: 200, type: [CartsModel]})
     async addToCart(@Body() dto) {
         return this.cartService.addToCart(dto)
     }

@@ -1,5 +1,4 @@
 import {BelongsTo, BelongsToMany, Column, DataType, ForeignKey, Model, Table} from "sequelize-typescript";
-import {ApiProperty} from "@nestjs/swagger";
 import {DishesModel} from "../dishes/dishes.model";
 import {OrdersDishesModel} from "../pivotTables/Orders_Dishes.model";
 import {UsersModel} from "../users/users.model";
@@ -17,23 +16,18 @@ interface OrdersCreationAttrs {
     tableName: "orders"
 })
 export class OrdersModel extends Model<OrdersModel, OrdersCreationAttrs> {
-    @ApiProperty({example: 1, description: "uniq id"})
     @Column({type: DataType.INTEGER, unique: true, autoIncrement: true, primaryKey: true})
     id: number;
 
-    @ApiProperty({example: "status", description: "status of order"})
     @Column({type: DataType.BOOLEAN, allowNull: false})
     status: boolean;
 
-    @ApiProperty({example: "01.01.2000", description: "date of order"})
     @Column({type: DataType.DATEONLY, unique: false, allowNull: false})
     date: string;
 
-    @ApiProperty({example: "10:00", description: "time of order"})
     @Column({type: DataType.TIME, allowNull: false})
     time: string;
 
-    @ApiProperty({example: true, description: "discount was used or not"})
     @Column({type: DataType.BOOLEAN, allowNull: false, defaultValue: false})
     discount: boolean;
 
