@@ -91,11 +91,11 @@ export class OrdersService {
             include: [{model: DishesModel, attributes: ["name", "price"]}],
             order: [["id", "DESC"]]
         });
-        // for (const order of orders) {
-        //     for (const dish of order.dataValues.dishes) {
-        //         dish.dataValues.name = await this.translationService.translateText(dish.dataValues.name, dto.lang);
-        //     }
-        // }
+        for (const order of orders) {
+            for (const dish of order.dataValues.dishes) {
+                dish.dataValues.name = await this.translationService.translateText(dish.dataValues.name, dto.lang);
+            }
+        }
         return orders;
     }
 
@@ -109,11 +109,11 @@ export class OrdersService {
             order: [["id", "DESC"]]
         });
 
-        // for (const order of orders) {
-        //     for (const dish of order.dataValues.dishes) {
-        //         dish.dataValues.name = await this.translationService.translateText(dish.dataValues.name, dto.lang);
-        //     }
-        // }
+        for (const order of orders) {
+            for (const dish of order.dataValues.dishes) {
+                dish.dataValues.name = await this.translationService.translateText(dish.dataValues.name, dto.lang);
+            }
+        }
         return orders;
     }
 

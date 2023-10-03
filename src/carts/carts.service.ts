@@ -36,11 +36,17 @@ export class CartsService {
     }
 
     async addToCart(dto) {
-        return await CartsModel.create({dishId: dto.dishId, userId: dto.userId, quantity: dto.quantity})
+        const foundedCart = await CartsModel.findOne({where: {dishId: dto.dishId, userId: dto.userId}})
+        if (!foundedCart) {
+            await CartsModel.create({dishId: dto.dishId, userId: dto.userId, quantity: dto.quantity})
+        }
+        return this.getCart(dto.userId)
+
     }
 
     async removeFromCart(dishId, userId) {
-        return CartsModel.destroy({where: {dishId: dishId, userId: userId}})
+        await CartsModel.destroy({where: {dishId: dishId, userId: userId}})
+        return this.getCart(userId)
     }
 
     async deleteCart(userId) {
