@@ -39,9 +39,7 @@ export class DishesService {
                 ]
             });
         }
-        if (lang === "ua") {
-            lang = "uk"
-        }
+
         return await Promise.all(
             allDishes.map(async (dish) => {
                 return {
@@ -80,10 +78,6 @@ export class DishesService {
                 order: [["id", "ASC"]]
             });
         }
-        if (lang === "ua") {
-            lang = "uk";
-        }
-
         if (lang !== "en") {
             const keywordsEng = await this.translationService.translateText(keywords, "en");
             var searchTerms = keywordsEng.toLowerCase().split(' ');
@@ -191,9 +185,6 @@ export class DishesService {
     }
 
     async getAllFavoritesDishes({userId}, lang) {
-        if (lang === "ua") {
-            lang = "uk";
-        }
         const favorites = await FavoritesModel.findAll({
             where: {userId, status: true},
         });

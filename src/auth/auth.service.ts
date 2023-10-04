@@ -22,9 +22,6 @@ export class AuthService {
     }
 
     async login(dto: LoginDto, lang) {
-        if (lang === "ua") {
-            lang = "uk"
-        }
         const user = await this.userModel.findOne({where: {email: dto.email}, include: {all: true}})
         if (!user) {
             throw new UnauthorizedException({message: await this.translationService.translateText("The are no users with such email", `${lang}`)})
@@ -46,9 +43,6 @@ export class AuthService {
     }
 
     async registration(dto, lang) {
-        if (lang === "ua") {
-            lang = "uk"
-        }
         const dtoEmail = dto.email
         const candidate = await UsersModel.findAll({where: {email: dtoEmail}})
         const emptyAvatar = fs.readFileSync(`src/assets/images/emptyAvatar.png`);

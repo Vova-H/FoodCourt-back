@@ -16,9 +16,6 @@ export class OrdersService {
     }
 
     async createOrder(cart, clientId, lang, discount) {
-        if (lang === "ua") {
-            lang = "uk"
-        }
         try {
             const createDIshOrderHandler = async (orderId, product) => {
                 await OrdersDishesModel.create({
@@ -50,9 +47,6 @@ export class OrdersService {
     }
 
     async getOrderByClientId(dto) {
-        if (dto.lang === "ua") {
-            dto.lang = "uk"
-        }
         const orders = await OrdersModel.findAll({
             where: {clientId: dto.clientId},
             include: [{model: DishesModel, attributes: ["name", "price"]}],
@@ -70,11 +64,17 @@ export class OrdersService {
         try {
             const order = await OrdersModel.findOne({where: {id: dto.id}})
             if (!order) {
-                return {"message": "There are no orders with such id", "status": 404}
+                return {
+                    "message": await this.translationService.translateText("There are no orders with such id", dto.lang),
+                    "status": 404
+                }
             } else {
                 order.status = true
                 await order.save()
-                return {"message": "The order was completed", "status": 200}
+                return {
+                    "message": await this.translationService.translateText("The order was completed", dto.lang),
+                    "status": 200
+                }
             }
 
         } catch (e) {
@@ -84,9 +84,6 @@ export class OrdersService {
     }
 
     async getAllOrders(dto) {
-        if (dto.lang === "ua") {
-            dto.lang = "uk"
-        }
         const orders = await OrdersModel.findAll({
             include: [{model: DishesModel, attributes: ["name", "price"]}],
             order: [["id", "DESC"]]
@@ -100,9 +97,6 @@ export class OrdersService {
     }
 
     async getAllActiveOrders(dto) {
-        if (dto.lang === "ua") {
-            dto.lang = "uk"
-        }
         const orders = await OrdersModel.findAll({
             where: {status: false},
             include: [{model: DishesModel, attributes: ["name", "price"]}],
@@ -118,9 +112,6 @@ export class OrdersService {
     }
 
     async getAllCompletedOrders(dto) {
-        if (dto.lang === "ua") {
-            dto.lang = "uk"
-        }
         const orders = await OrdersModel.findAll({
             where: {status: true},
             include: [{model: DishesModel, attributes: ["name", "price"]}],

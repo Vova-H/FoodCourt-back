@@ -1,6 +1,6 @@
 import {Body, Controller, Post, Query} from '@nestjs/common';
 import {AuthService} from "./auth.service";
-import {LoginDto} from "./dto/login.dto";
+
 
 @Controller('auth')
 export class AuthController {
@@ -9,7 +9,7 @@ export class AuthController {
     }
 
     @Post("/login")
-    async login(@Body() dto: LoginDto, @Query('lang') lang) {
+    async login(@Body() dto, @Query('lang') lang) {
         const {token} = await this.authService.login(dto, lang)
         return {token}
     }
