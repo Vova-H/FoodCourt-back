@@ -132,41 +132,50 @@ export class DishesService {
     }
 
 
-    async createDish(dtoDish, dtoDishImage) {
+    async createDish(dtoDish, dtoDishImage, lang) {
+        const translatedName = await this.translationService.translateText(dtoDish.name, "en")
+        const translatedDescription = await this.translationService.translateText(dtoDish.description, "en")
         const dish = {
             ...dtoDish,
+            name: translatedName,
+            description: translatedDescription,
             imageName: dtoDishImage.originalname,
             imageData: dtoDishImage.buffer,
         }
         await DishesModel.create(dish)
-        throw new HttpException("The dish was added successfully", HttpStatus.CREATED)
+        throw new HttpException(await this.translationService.translateText("The dish was added successfully", lang), HttpStatus.CREATED)
     }
 
-    async editDish(dtoDish, dtoDishImage, id) {
-
+    async editDish(dtoDish, dtoDishImage, id, lang) {
+        const translatedName = await this.translationService.translateText(dtoDish.name, "en")
+        const translatedDescription = await this.translationService.translateText(dtoDish.description, "en")
         const existingDish = await DishesModel.findOne({where: {id: id.id}});
 
         if (!existingDish) {
-            throw new HttpException("Dish not found", HttpStatus.NOT_FOUND);
+            throw new HttpException(await this.translationService.translateText("Dish not found", lang), HttpStatus.NOT_FOUND);
         }
         const updatedDish = {
             ...dtoDish,
+            name: translatedName,
+            description: translatedDescription,
             imageName: dtoDishImage.originalname,
             imageData: dtoDishImage.buffer,
         };
 
         await DishesModel.update(updatedDish, {where: {id: id.id}});
 
-        throw new HttpException("The dish was updated successfully", HttpStatus.OK);
+        throw new HttpException(await this.translationService.translateText("The dish was updated successfully", lang), HttpStatus.OK);
     }
 
 
-    async getDishById(id: number) {
+    async getDishById(id: number, lang: string) {
         const dish = await DishesModel.findOne({where: {id}})
+        const translatedName = await this.translationService.translateText(dish.name, lang)
+        const translatedDescription = await this.translationService.translateText(dish.description, lang)
         return {
             id: dish.id,
-            name: dish.name,
-            description: dish.description,
+            name: translatedName,
+            description: translatedDescription,
             weight: dish.weight,
             calories: dish.calories,
             price: dish.price,

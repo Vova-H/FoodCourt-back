@@ -51,8 +51,8 @@ export class DishesController {
 
 
     @Get("/:id")
-    async getDishById(@Param("id") id: number) {
-        return this.dishesService.getDishById(id)
+    async getDishById(@Param("id") id: number, @Query('lang') lang: string) {
+        return this.dishesService.getDishById(id, lang)
     }
 
     @UseGuards(AuthGuard)
@@ -60,9 +60,9 @@ export class DishesController {
     @UseGuards(RolesGuard)
     @Post("/add")
     @UseInterceptors(FileInterceptor('image'))
-    async createDish(@UploadedFile() image, @Body() dish) {
+    async createDish(@UploadedFile() image, @Body() dish, @Query("lang") lang) {
         const dtoDish = JSON.parse(dish.dish)
-        return this.dishesService.createDish(dtoDish, image)
+        return this.dishesService.createDish(dtoDish, image, lang)
     }
 
 
@@ -71,9 +71,9 @@ export class DishesController {
     @UseGuards(RolesGuard)
     @Post("/edit/:id")
     @UseInterceptors(FileInterceptor('image'))
-    async editDish(@UploadedFile() image, @Body() dish, @Param() id: number) {
+    async editDish(@UploadedFile() image, @Body() dish, @Param() id: number, @Query('lang') lang: string) {
         const dtoDish = JSON.parse(dish.dish)
-        return this.dishesService.editDish(dtoDish, image, id)
+        return this.dishesService.editDish(dtoDish, image, id, lang)
     }
 
 
