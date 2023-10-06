@@ -9,18 +9,18 @@ export class CartsController {
     }
 
     @Get("get")
-    async getCart(@Query() dto) {
-        return this.cartService.getCart(dto.userId)
+    async getCart(@Query() params) {
+        return this.cartService.getCart(params.userId, params.lang)
     }
 
     @Post("add")
-    async addToCart(@Body() dto) {
-        return this.cartService.addToCart(dto)
+    async addToCart(@Body() dto, @Query("lang") lang) {
+        return this.cartService.addToCart(dto, lang)
     }
 
     @Post("removeOne")
-    async removeFromCart(@Body() dto) {
-        return this.cartService.removeFromCart(dto.cartItemId, dto.userId)
+    async removeFromCart(@Body() dto, @Query("lang") lang) {
+        return this.cartService.removeFromCart(dto.cartItemId, dto.userId, lang)
     }
 
     @Post("remove")
