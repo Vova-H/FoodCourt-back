@@ -22,8 +22,8 @@ export class UsersController {
 
     @UseGuards(AuthGuard)
     @Get(":id")
-    async getUserById(@Param('id') id) {
-        return await this.userService.getUserById(id)
+    async getUserById(@Param('id') id, @Query("lang") lang) {
+        return await this.userService.getUserById(id, lang)
     }
 
     @Post()
@@ -35,21 +35,21 @@ export class UsersController {
     @UseGuards(AuthGuard)
     @Roles("ADMIN")
     @UseGuards(RolesGuard)
-    async addRole(@Body() dto: AddRoleDto) {
-        return this.userService.addRole(dto)
+    async addRole(@Body() dto: AddRoleDto, @Query("lang") lang) {
+        return this.userService.addRole(dto, lang)
     }
 
     @Post("/delete_role")
     @UseGuards(AuthGuard)
     @Roles("ADMIN")
     @UseGuards(RolesGuard)
-    async deleteRole(@Body() dto: AddRoleDto) {
-        return this.userService.deleteRole(dto)
+    async deleteRole(@Body() dto: AddRoleDto, @Query("lang") lang) {
+        return this.userService.deleteRole(dto, lang)
     }
 
     @Post("/use_discount/:id")
-    async changeDiscountStatus(@Param('id') id: number) {
-        return this.userService.changeDiscountStatus(id)
+    async changeDiscountStatus(@Param('id') id: number, @Query("lang") lang) {
+        return this.userService.changeDiscountStatus(id, lang)
     }
 
 }

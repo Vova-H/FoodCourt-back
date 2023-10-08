@@ -9,10 +9,11 @@ import {RolesModule} from "../roles/roles.module";
 import {AuthModule} from "../auth/auth.module";
 import {AvatarsModel} from "../avatars/avatarts.model";
 import {AvatarsModule} from "../avatars/avatars.module";
+import {TranslationService} from "../translation/translation.service";
 
 @Module({
     controllers: [UsersController],
-    providers: [UsersService],
+    providers: [UsersService, TranslationService],
     imports: [
         SequelizeModule.forFeature([UsersModel, RolesModel, UsersRolesModel, AvatarsModel]),
         RolesModule, forwardRef(() => AuthModule),

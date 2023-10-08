@@ -1,4 +1,4 @@
-import {HttpException, Injectable} from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {OrdersModel} from "./orders.model";
 import {InjectModel} from "@nestjs/sequelize";
 import {OrdersDishesModel} from "../pivotTables/Orders_Dishes.model";
@@ -42,7 +42,7 @@ export class OrdersService {
 
         } catch (e) {
             console.log(e)
-            throw new HttpException("Bad request", 400)
+            throw new HttpException("Bad request", HttpStatus.BAD_REQUEST)
         }
     }
 
@@ -64,22 +64,16 @@ export class OrdersService {
         try {
             const order = await OrdersModel.findOne({where: {id: dto.id}})
             if (!order) {
-                return {
-                    "message": await this.translationService.translateText("There are no orders with such id", dto.lang),
-                    "status": 404
-                }
+                return  new HttpException(await this.translationService.translateText("There are no orders with such id", dto.lang), HttpStatus.NOT_FOUND)
             } else {
                 order.status = true
                 await order.save()
-                return {
-                    "message": await this.translationService.translateText("The order was completed", dto.lang),
-                    "status": 200
-                }
+                return  new HttpException(await this.translationService.translateText("The order was completed", dto.lang), HttpStatus.OK)
             }
 
         } catch (e) {
             console.log(e)
-            throw new HttpException("Bad request", 400)
+            throw new HttpException(await this.translationService.translateText("Request error", dto.lang), HttpStatus.BAD_REQUEST)
         }
     }
 

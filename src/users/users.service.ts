@@ -7,12 +7,14 @@ import {RegistrationDto} from "../auth/dto/registration.dto";
 import {UsersRolesModel} from "../pivotTables/users_roles.model";
 import {AvatarsModel} from "../avatars/avatarts.model";
 import {Op} from "sequelize";
+import {TranslationService} from "../translation/translation.service";
 
 @Injectable()
 export class UsersService {
     constructor(@InjectModel(UsersModel)
                 private userModel: typeof UsersModel,
-                private roleService: RolesService
+                private roleService: RolesService,
+                private translationService: TranslationService
     ) {
     }
 
@@ -56,10 +58,10 @@ export class UsersService {
     }
 
 
-    async getUserById(id) {
+    async getUserById(id, lang) {
         const user = await this.userModel.findOne({where: {id: id}, include: {all: true}})
         if (!user) {
-            throw new HttpException("There are no users with such id", HttpStatus.BAD_REQUEST)
+            throw new HttpException(await this.translationService.translateText("There are no users with such id", lang), HttpStatus.NOT_FOUND)
         }
         return {
             id: user.id,
@@ -84,12 +86,12 @@ export class UsersService {
         return user
     }
 
-    async addRole(dto) {
+    async addRole(dto, lang) {
         const userModel = await UsersModel.findOne({where: {id: dto.userId}, include: [{model: RolesModel}]})
         const roleModel = await this.roleService.getRoleByValue(dto.role)
         const userRoleModel = await UsersRolesModel.findOne({where: {userId: userModel.id, roleId: roleModel.id}})
         if (userRoleModel) {
-            throw new HttpException("The user already has current role", HttpStatus.CONFLICT)
+            throw new HttpException(await this.translationService.translateText("The user already has current role", lang), HttpStatus.CONFLICT)
         }
         if (userModel && roleModel) {
             await userModel.$add("role", roleModel.id)
@@ -100,19 +102,19 @@ export class UsersService {
                 role: role.role
             }));
         } else {
-            throw new HttpException("The are no such role or user", HttpStatus.ACCEPTED)
+            throw new HttpException(await this.translationService.translateText("The are no such role or user", lang), HttpStatus.NOT_FOUND)
         }
     }
 
-    async deleteRole(dto) {
+    async deleteRole(dto, lang) {
         const userModel = await UsersModel.findOne({where: {id: dto.userId}, include: [{model: RolesModel}]})
         const roleModel = await this.roleService.getRoleByValue(dto.role)
         if (roleModel.role === "ADMIN") {
-            throw new HttpException("You can't delete role admin", HttpStatus.CONFLICT)
+            throw new HttpException(await this.translationService.translateText("You can't delete role admin", lang), HttpStatus.FORBIDDEN)
         }
         const userRoleModel = await UsersRolesModel.findOne({where: {userId: userModel.id, roleId: roleModel.id}})
         if (!userRoleModel) {
-            throw new HttpException("The user does not have this role for delete", HttpStatus.CONFLICT)
+            throw new HttpException(await this.translationService.translateText("The user does not have this role for delete", lang), HttpStatus.NOT_FOUND)
         } else {
             await UsersRolesModel.destroy({where: {userId: userModel.id, roleId: roleModel.id}})
             const userModelRefresh = await UsersModel.findOne({where: {id: dto.userId}, include: [{model: RolesModel}]})
@@ -125,10 +127,10 @@ export class UsersService {
     }
 
 
-    async changeDiscountStatus(user_id: number) {
+    async changeDiscountStatus(user_id: number, lang) {
         const user = await UsersModel.findOne({where: {id: user_id}})
         user.discount_is_using = true
         await user.save()
-        throw new HttpException("The status of discount was been change successfully", HttpStatus.ACCEPTED)
+        throw new HttpException(await this.translationService.translateText("The status of discount was been change successfully", lang), HttpStatus.ACCEPTED)
     }
 }
