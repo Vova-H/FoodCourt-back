@@ -8,6 +8,7 @@ import {LoginDto} from "./dto/login.dto";
 import {AvatarsService} from "../avatars/avatars.service";
 import * as fs from "fs";
 import {TranslationService} from "../translation/translation.service";
+import {RolesModel} from "../roles/roles.model";
 
 @Injectable()
 export class AuthService {
@@ -22,24 +23,31 @@ export class AuthService {
     }
 
     async login(dto: LoginDto, lang) {
-        const user = await this.userModel.findOne({where: {email: dto.email}, include: {all: true}})
+        const user = await this.userModel.findOne({
+            where: {email: dto.email},
+            attributes: ['id', 'username', "password", 'email', 'discount_is_using'],
+            include: RolesModel
+        });
         if (!user) {
-            throw new HttpException({message: await this.translationService.translateText("The are no users with such email", `${lang}`)}, HttpStatus.NOT_FOUND)
+            throw new HttpException({message: await this.translationService.translateText("The are no users with such email", `${lang}`)}, HttpStatus.NOT_FOUND);
         }
-        const passwordsCompare = await bcrypt.compare(dto.password, user.password)
+        const passwordsCompare = await bcrypt.compare(dto.password, user.password);
+        const roles = user.roles.map(role => role.role)
         if (passwordsCompare) {
             const payload = {
                 id: user.id,
                 username: user.username,
                 email: user.email,
-                roles: user.roles,
+                roles: roles,
                 discount_is_using: user.discount_is_using
-            }
+            };
+
             return {
                 token: this.jwtService.sign(payload),
-            }
+            };
         }
-        throw new HttpException({message: await this.translationService.translateText("Wrong password or email", `${lang}`)}, HttpStatus.BAD_REQUEST)
+
+        throw new HttpException({message: await this.translationService.translateText("Wrong password or email", `${lang}`)}, HttpStatus.BAD_REQUEST);
     }
 
     async registration(dto, lang) {
