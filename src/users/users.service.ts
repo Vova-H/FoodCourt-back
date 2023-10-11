@@ -33,7 +33,6 @@ export class UsersService {
                 ]
             }
         });
-
         return users.map(user => {
             let roles = user.roles.map(role => {
                 return {
